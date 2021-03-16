@@ -3,6 +3,13 @@
 
     <menu id="application" caption="msg://com.company.spacetrans/menu.application" insertBefore="administration">
         <item screen="st_User.browse" caption="msg://com.company.spacetrans.screen.user/UserBrowse.caption"/>
+        <item screen="st_Gas.browse" caption="msg://com.company.spacetrans.screen.gas/gasBrowse.caption"/>
+        <item screen="st_AtmosphericGas.browse"
+              caption="msg://com.company.spacetrans.screen.atmosphericgas/atmosphericGasBrowse.caption"/>
+        <item screen="st_Atmosphere.browse"
+              caption="msg://com.company.spacetrans.screen.atmosphere/atmosphereBrowse.caption"/>
+        <item screen="st_Moon.browse" caption="msg://com.company.spacetrans.screen.moon/moonBrowse.caption"/>
+        <item screen="st_Planet.browse" caption="msg://com.company.spacetrans.screen.planet/planetBrowse.caption"/>
     </menu>
 
 </menu-config>
