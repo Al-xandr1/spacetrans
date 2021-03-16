@@ -13,7 +13,9 @@
             <column name="VERSION" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="PRESSURE" type="DOUBLE"/>
         </createTable>
     </changeSet>
@@ -28,9 +30,7 @@
             <column name="GAS_ID" type="UUID">
                 <constraints nullable="false"/>
             </column>
-            <column name="VOLUME" type="DOUBLE">
-                <constraints nullable="false"/>
-            </column>
+            <column name="VOLUME" type="DOUBLE"/>
             <column name="ATMOSPHERE_ID" type="UUID">
                 <constraints nullable="false"/>
             </column>
@@ -59,7 +59,7 @@
             </column>
             <column name="NAME" type="VARCHAR(255)"/>
             <column name="MASS" type="DOUBLE"/>
-            <column name="picture" type="BLOB"/>
+            <column name="PICTURE" type="VARCHAR(255)"/>
             <column name="ATMOSPHERE_ID" type="UUID">
                 <constraints nullable="false"/>
             </column>
@@ -76,7 +76,7 @@
             </column>
             <column name="NAME" type="VARCHAR(255)"/>
             <column name="MASS" type="DOUBLE"/>
-            <column name="picture" type="BLOB"/>
+            <column name="PICTURE" type="VARCHAR(255)"/>
             <column name="SEMI_MAJOR_AXIS" type="DOUBLE">
                 <constraints nullable="false"/>
             </column>

@@ -1,13 +1,15 @@
 package com.company.spacetrans.entity;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import io.jmix.core.FileRef;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.metamodel.annotation.PropertyDatatype;
 
-import javax.persistence.*;
-import java.io.FileDescriptor;
-import java.sql.Blob;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.util.UUID;
 
 @JmixEntity(name = "st_AstronomicalBody")
@@ -29,13 +31,17 @@ public class AstronomicalBody {
     @Column(name = "MASS")
     private Double mass;
 
-    //todo ссылка на файл в FileStorage - what is it? io.jmix.core.FileStorage & https://docs.jmix.io/jmix/0.x/files/fsfilestorage.html
-    //todo BLOB. Замапипить через AttributeConverter
-//    @Column(name = "PICTURE")
-//    private FileDescriptor picture;
-    @Lob
-    @Column(name = "picture")
-    private byte[] picture;
+    @PropertyDatatype("fileRef")
+    @Column(name = "PICTURE")
+    private FileRef picture;
+
+    public void setPicture(FileRef picture) {
+        this.picture = picture;
+    }
+
+    public FileRef getPicture() {
+        return picture;
+    }
 
     public Integer getVersion() {
         return version;
@@ -43,14 +49,6 @@ public class AstronomicalBody {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
-
-    public byte[] getPicture() {
-        return picture;
-    }
-
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
     }
 
     public Double getMass() {

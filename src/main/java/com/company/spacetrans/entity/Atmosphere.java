@@ -1,11 +1,14 @@
 package com.company.spacetrans.entity;
 
+import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,13 +25,15 @@ public class Atmosphere {
     @Version
     private Integer version;
 
+    @NotNull
     @InstanceName
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
     @Column(name = "PRESSURE")
     private Double pressure;
 
+    @OnDeleteInverse(DeletePolicy.DENY)
     @Composition
     @OneToMany(mappedBy = "atmosphere")
     private List<AtmosphericGas> gases;

@@ -1,5 +1,7 @@
 package com.company.spacetrans.entity;
 
+import io.jmix.core.DeletePolicy;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
@@ -10,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "ST_PLANET")
 @Entity(name = "st_Planet")
 public class Planet extends AstronomicalBody {
-    //todo set validation on numeric fields
+    //todo [LOW] set validation on numeric fields
 
     @NotNull
     @Column(name = "SEMI_MAJOR_AXIS", nullable = false)
@@ -24,10 +26,12 @@ public class Planet extends AstronomicalBody {
     @Column(name = "ROTATION_PERIOD", nullable = false)
     private Double rotationPeriod;
 
-    @JoinColumn(name = "ATMOSPHERE_ID", nullable = false)
+    @OnDeleteInverse(DeletePolicy.DENY)
+    //todo [HIGH] @OnDelete(DeletePolicy.CASCADE) это нужно? удаляется после переключения в дизайнер
     @Composition
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
+    @JoinColumn(name = "ATMOSPHERE_ID", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     private Atmosphere atmosphere;
 
     @NotNull
