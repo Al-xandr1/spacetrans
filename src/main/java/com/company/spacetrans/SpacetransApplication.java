@@ -25,8 +25,6 @@ public class SpacetransApplication {
 
 	//todo  [HIGH] подключить PostgreSQL
 	//todo  [HIGH] стоит убрать создание зависимых сущностей без созданных родительских. Понять как
-	//todo  [HIGH] вынести UID и Version в суперкласс
-	//todo  [LOW] везде добавить Version
 	//todo  [LOW] исключить version из поиска в UI. Понять как
 
 	//todo  [BUG] Shift+f1 – пробрасывает на документацию, а там 404

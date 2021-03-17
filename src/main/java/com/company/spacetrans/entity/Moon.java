@@ -1,7 +1,6 @@
 package com.company.spacetrans.entity;
 
 import io.jmix.core.DeletePolicy;
-import io.jmix.core.entity.annotation.OnDelete;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.JmixEntity;
@@ -15,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class Moon extends AstronomicalBody {
 
     @OnDeleteInverse(DeletePolicy.DENY)
-    //todo [HIGH] @OnDelete(DeletePolicy.CASCADE) это нужно? удаляется после переключения в дизайнер
+    //todo [LOW] @OnDelete(DeletePolicy.CASCADE) это нужно? удаляется после переключения в дизайнер
     @Composition
     @NotNull
     @JoinColumn(name = "ATMOSPHERE_ID", nullable = false)

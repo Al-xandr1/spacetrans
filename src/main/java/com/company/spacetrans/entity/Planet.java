@@ -27,7 +27,7 @@ public class Planet extends AstronomicalBody {
     private Double rotationPeriod;
 
     @OnDeleteInverse(DeletePolicy.DENY)
-    //todo [HIGH] @OnDelete(DeletePolicy.CASCADE) это нужно? удаляется после переключения в дизайнер
+    //todo [LOW] @OnDelete(DeletePolicy.CASCADE) это нужно? удаляется после переключения в дизайнер
     @Composition
     @NotNull
     @JoinColumn(name = "ATMOSPHERE_ID", nullable = false)
@@ -36,11 +36,14 @@ public class Planet extends AstronomicalBody {
 
     @NotNull
     @Column(name = "RINGS", nullable = false)
-    private Boolean rings = false;
-
+    private Boolean rings;
 
     public Boolean getRings() {
         return rings;
+    }
+
+    public void setRings(Boolean rings) {
+        this.rings = rings;
     }
 
     public void setRotationPeriod(Double rotationPeriod) {

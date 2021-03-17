@@ -1,6 +1,5 @@
 package com.company.spacetrans.entity;
 
-import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.SystemLevel;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
@@ -13,23 +12,13 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.UUID;
 
 @JmixEntity
 @Entity(name = "st_User")
 @Table(name = "ST_USER", indexes = {
         @Index(name = "IDX_ST_USER_ON_USERNAME", columnList = "USERNAME", unique = true)
 })
-public class User implements UserDetails, GrantedAuthorityContainer {
-
-    @Id
-    @Column(name = "ID")
-    @JmixGeneratedValue
-    private UUID id;
-
-    @Version
-    @Column(name = "VERSION", nullable = false)
-    private Integer version;
+public class User extends AbstractEntity implements UserDetails, GrantedAuthorityContainer {
 
     @Column(name = "USERNAME", nullable = false)
     protected String username;
@@ -53,22 +42,6 @@ public class User implements UserDetails, GrantedAuthorityContainer {
 
     @Transient
     protected Collection<? extends GrantedAuthority> authorities;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
 
     public String getPassword() {
         return password;

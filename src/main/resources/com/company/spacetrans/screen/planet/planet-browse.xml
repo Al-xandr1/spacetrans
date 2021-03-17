@@ -65,6 +65,9 @@
                         <button id="editBtn" action="planetsTable.edit"/>
                         <button id="refreshBtn" action="planetsTable.refresh"/>
                         <button id="removeBtn" action="planetsTable.remove"/>
+                        <fileUpload id="importPlanets" uploadButtonCaption="msg://com.company.spacetrans.screen.planet/importPlanet.caption"
+                                    uploadButtonDescription="msg://com.company.spacetrans.screen.planet/importPlanet.description"
+                        />
                     </buttonsPanel>
                 </groupTable>
                 <hbox id="lookupActions" spacing="true" visible="false">
