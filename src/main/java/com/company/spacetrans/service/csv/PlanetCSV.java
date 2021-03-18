@@ -1,6 +1,10 @@
 package com.company.spacetrans.service.csv;
 
+import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvCustomBindByPosition;
+import com.opencsv.exceptions.CsvConstraintViolationException;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
 
 public class PlanetCSV {
 
@@ -8,34 +12,34 @@ public class PlanetCSV {
     private String name;
 
     @CsvBindByPosition(position = 1)
-    private String equatorialDiameter;
+    private Double equatorialDiameter;
 
     @CsvBindByPosition(position = 2)
-    private String mass;
+    private Double mass;
 
     @CsvBindByPosition(position = 3)
-    private String semiMajorAxis;
+    private Double semiMajorAxis;
 
     @CsvBindByPosition(position = 4)
-    private String orbitalPeriod;
+    private Double orbitalPeriod;
 
     @CsvBindByPosition(position = 5)
-    private String inclinationToSunsEquator;
+    private Double inclinationToSunsEquator;
 
     @CsvBindByPosition(position = 6)
-    private String orbitalEccentricity;
+    private Double orbitalEccentricity;
 
     @CsvBindByPosition(position = 7)
-    private String rotationPeriod;
+    private Double rotationPeriod;
 
     @CsvBindByPosition(position = 8)
-    private String confirmedMoons;
+    private Integer confirmedMoons;
 
     @CsvBindByPosition(position = 9)
-    private String axialTilt;
+    private Double axialTilt;
 
-    @CsvBindByPosition(position = 10)
-    private String rings;
+    @CsvCustomBindByPosition(position = 10, converter =BooleanConverter.class)
+    private Boolean rings;
 
     @CsvBindByPosition(position = 11)
     private String atmosphere;
@@ -48,83 +52,83 @@ public class PlanetCSV {
         this.name = name;
     }
 
-    public String getEquatorialDiameter() {
+    public Double getEquatorialDiameter() {
         return equatorialDiameter;
     }
 
-    public void setEquatorialDiameter(String equatorialDiameter) {
+    public void setEquatorialDiameter(Double equatorialDiameter) {
         this.equatorialDiameter = equatorialDiameter;
     }
 
-    public String getMass() {
+    public Double getMass() {
         return mass;
     }
 
-    public void setMass(String mass) {
+    public void setMass(Double mass) {
         this.mass = mass;
     }
 
-    public String getSemiMajorAxis() {
+    public Double getSemiMajorAxis() {
         return semiMajorAxis;
     }
 
-    public void setSemiMajorAxis(String semiMajorAxis) {
+    public void setSemiMajorAxis(Double semiMajorAxis) {
         this.semiMajorAxis = semiMajorAxis;
     }
 
-    public String getOrbitalPeriod() {
+    public Double getOrbitalPeriod() {
         return orbitalPeriod;
     }
 
-    public void setOrbitalPeriod(String orbitalPeriod) {
+    public void setOrbitalPeriod(Double orbitalPeriod) {
         this.orbitalPeriod = orbitalPeriod;
     }
 
-    public String getInclinationToSunsEquator() {
+    public Double getInclinationToSunsEquator() {
         return inclinationToSunsEquator;
     }
 
-    public void setInclinationToSunsEquator(String inclinationToSunsEquator) {
+    public void setInclinationToSunsEquator(Double inclinationToSunsEquator) {
         this.inclinationToSunsEquator = inclinationToSunsEquator;
     }
 
-    public String getOrbitalEccentricity() {
+    public Double getOrbitalEccentricity() {
         return orbitalEccentricity;
     }
 
-    public void setOrbitalEccentricity(String orbitalEccentricity) {
+    public void setOrbitalEccentricity(Double orbitalEccentricity) {
         this.orbitalEccentricity = orbitalEccentricity;
     }
 
-    public String getRotationPeriod() {
+    public Double getRotationPeriod() {
         return rotationPeriod;
     }
 
-    public void setRotationPeriod(String rotationPeriod) {
+    public void setRotationPeriod(Double rotationPeriod) {
         this.rotationPeriod = rotationPeriod;
     }
 
-    public String getConfirmedMoons() {
+    public Integer getConfirmedMoons() {
         return confirmedMoons;
     }
 
-    public void setConfirmedMoons(String confirmedMoons) {
+    public void setConfirmedMoons(Integer confirmedMoons) {
         this.confirmedMoons = confirmedMoons;
     }
 
-    public String getAxialTilt() {
+    public Double getAxialTilt() {
         return axialTilt;
     }
 
-    public void setAxialTilt(String axialTilt) {
+    public void setAxialTilt(Double axialTilt) {
         this.axialTilt = axialTilt;
     }
 
-    public String getRings() {
+    public Boolean getRings() {
         return rings;
     }
 
-    public void setRings(String rings) {
+    public void setRings(Boolean rings) {
         this.rings = rings;
     }
 
@@ -134,5 +138,21 @@ public class PlanetCSV {
 
     public void setAtmosphere(String atmosphere) {
         this.atmosphere = atmosphere;
+    }
+
+    public static class BooleanConverter extends AbstractBeanField<Boolean> {
+
+        @Override
+        protected Boolean convert(String value) throws CsvDataTypeMismatchException, CsvConstraintViolationException {
+            switch (value) {
+                case "yes": {
+                    return true;
+                }
+                case "no": {
+                    return false;
+                }
+            }
+            return false;
+        }
     }
 }

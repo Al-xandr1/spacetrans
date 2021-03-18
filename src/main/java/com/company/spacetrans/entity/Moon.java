@@ -14,11 +14,10 @@ import javax.validation.constraints.NotNull;
 public class Moon extends AstronomicalBody {
 
     @OnDeleteInverse(DeletePolicy.DENY)
-    //todo [LOW] @OnDelete(DeletePolicy.CASCADE) это нужно? удаляется после переключения в дизайнер
     @Composition
     @NotNull
     @JoinColumn(name = "ATMOSPHERE_ID", nullable = false)
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     private Atmosphere atmosphere;
 
     @JoinColumn(name = "PLANET_ID")

@@ -21,11 +21,11 @@ public class AtmosphericGas extends AbstractEntity {
     @ManyToOne(optional = false)
     private Gas gas;
 
-    //todo [BUG] При проставлении формата в дизайнере он сбрасывается при переключении фокуса с поля Number format. При попытке проставить вручную аннотацию @NumberFormat(pattern = "###.00%") - она пропадает после переключения в дизайнер
+    //todo BUG При проставлении формата в дизайнере он сбрасывается при переключении фокуса с поля Number format. При попытке проставить вручную аннотацию @NumberFormat(pattern = "###.00%") - она пропадает после переключения в дизайнер
     //@NumberFormat(pattern = "###.00%") todo [LOW] либо попробовать через String и AttributeConverter
     @NumberFormat(pattern = "###.00%")
-    //todo [BUG] Нельзя проставить число в поле volume - возникает алерт "Must be a double", хотя вводится значение 0.5 или 0,5
-    //todo [LOW] @NotNull - вернуть после починки.
+    //todo BUG Нельзя проставить число в поле volume - возникает алерт "Must be a double", хотя вводится значение 0.5 или 0,5
+    //todo LOW @NotNull - вернуть после починки.
     @Column(name = "VOLUME") //, nullable = false)
     private Double volume;
 

@@ -39,10 +39,10 @@ public class PlanetRepository {
             for (PlanetCSV planetCSV : planetCSVs) {
                 if (storedPlanetsByName.containsKey(planetCSV.getName())) {
                     Planet updatedPlanet = update(storedPlanetsByName.get(planetCSV.getName()).iterator().next(), planetCSV);
-                    dataManager.save(updatedPlanet); //todo [HIGH] may be this is superfluous
+                    dataManager.save(updatedPlanet);
                 } else {
                     Planet newPlanet = create(planetCSV);
-                    dataManager.save(newPlanet); //todo [HIGH] [BUG] Why this has been thrown "Generated ID is null in com.company.spacetrans.entity.Planet-null [new]" ???
+                    dataManager.save(newPlanet);
                 }
             }
             return true;
@@ -58,24 +58,24 @@ public class PlanetRepository {
     }
 
     private Planet create(PlanetCSV planetCSV) {
-        Planet planet = new Planet();
+        Planet planet = dataManager.create(Planet.class);
         planet.setName(planetCSV.getName());
         update(planet, planetCSV);
         return planet;
     }
 
     private Atmosphere generateStubAtmosphere(Planet planet) {
-        Atmosphere atmosphere = new Atmosphere();
+        Atmosphere atmosphere = dataManager.create(Atmosphere.class);
         atmosphere.setDescription("Atmosphere for " + planet.getName());
         return atmosphere;
     }
 
     private Planet update(Planet planet, PlanetCSV planetCSV) {
-        planet.setMass(Double.parseDouble(planetCSV.getMass()));
-        planet.setSemiMajorAxis(Double.parseDouble(planetCSV.getSemiMajorAxis()));
-        planet.setOrbitalPeriod(Double.parseDouble(planetCSV.getOrbitalPeriod()));
-        planet.setRotationPeriod(Double.parseDouble(planetCSV.getRotationPeriod()));
-        planet.setRings(Boolean.parseBoolean(planetCSV.getRings()));
+        planet.setMass(planetCSV.getMass());
+        planet.setSemiMajorAxis(planetCSV.getSemiMajorAxis());
+        planet.setOrbitalPeriod(planetCSV.getOrbitalPeriod());
+        planet.setRotationPeriod(planetCSV.getRotationPeriod());
+        planet.setRings(planetCSV.getRings());
         planet.setAtmosphere(generateStubAtmosphere(planet));
         return planet;
     }

@@ -75,7 +75,7 @@
                     <button action="lookupCancelAction"/>
                 </hbox>
             </vbox>
-            <!--todo [LOW] add picture scaling -->
+            <!--todo LOW add picture scaling -->
             <vbox id="pictureBox" height="100%" spacing="true" expand="planetPicture" margin="true" width="AUTO">
                 <image id="planetPicture" dataContainer="planetsDc" property="picture" scaleMode="SCALE_DOWN"/>
             </vbox>
