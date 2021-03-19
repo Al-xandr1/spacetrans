@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name = "ST_ATMOSPHERE")
 @Entity(name = "st_Atmosphere")
 public class Atmosphere extends AbstractEntity {
+
     @NotNull
     @InstanceName
     @Column(name = "DESCRIPTION", nullable = false)

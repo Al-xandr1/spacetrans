@@ -2,16 +2,21 @@ package com.company.spacetrans.entity;
 
 import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
+import io.jmix.core.metamodel.annotation.Composition;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 
 @JmixEntity
-@Table(name = "ST_WAY_BILL")
-@Entity(name = "st_WayBill")
-public class WayBill extends AbstractEntity {
+@Table(name = "ST_WAYBILL")
+@Entity(name = "st_Waybill")
+public class Waybill extends AbstractEntity {
 
-    @Column(name = "REFERENCE")
+    @InstanceName
+    @Column(name = "REFERENCE", nullable = false, unique = true)
     private String reference;
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
@@ -19,28 +24,65 @@ public class WayBill extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User creator;
 
-    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "SHIPPER_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Customer shipper;
 
-    @JoinColumn(name = "CONSIGNEE_ID")
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @JoinColumn(name = "CONSIGNEE_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer consignee;
 
+    @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "DEPARTURE_PORT_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Spaceport departurePort;
 
+    @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "DESTINATION_PORT_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Spaceport destinationPort;
 
+    @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "CARRIER_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Carrier carrier;
 
-    //todo add items etc
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @Composition
+    @OneToMany(mappedBy = "waybill")
+    private List<WaybillItem> items;
+
+    @Column(name = "TOTAL_WEIGHT")
+    private Double totalWeight;
+
+    @Column(name = "TOTAL_CHARGE", precision = 19, scale = 2)
+    private BigDecimal totalCharge;
+
+    public BigDecimal getTotalCharge() {
+        return totalCharge;
+    }
+
+    public void setTotalCharge(BigDecimal totalCharge) {
+        this.totalCharge = totalCharge;
+    }
+
+    public Double getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(Double totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
+    public List<WaybillItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<WaybillItem> items) {
+        this.items = items;
+    }
 
     public Carrier getCarrier() {
         return carrier;
@@ -81,10 +123,6 @@ public class WayBill extends AbstractEntity {
     public void setShipper(Customer shipper) {
         this.shipper = shipper;
     }
-
-
-    //todo other attributes
-
 
     public User getCreator() {
         return creator;

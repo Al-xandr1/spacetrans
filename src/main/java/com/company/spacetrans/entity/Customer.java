@@ -3,21 +3,20 @@ package com.company.spacetrans.entity;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 
 @JmixEntity
 @Table(name = "ST_CUSTOMER")
 @Entity(name = "st_Customer")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Customer extends AbstractEntity {
 
     @InstanceName
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
+    //todo HIGH does the validation work?
     @Email
     @Column(name = "EMAIL")
     private String email;

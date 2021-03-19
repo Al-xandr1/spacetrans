@@ -14,7 +14,6 @@ import java.util.List;
 public class Spaceport extends AbstractEntity {
 
     @InstanceName
-    @NotNull
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
@@ -30,14 +29,12 @@ public class Spaceport extends AbstractEntity {
     @Column(name = "IS_DEFAULT", nullable = false)
     private Boolean isDefault = false;
 
-    @NotNull
-    @JoinColumn(name = "MOON_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "MOON_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Moon moon;
 
-    @NotNull
-    @JoinColumn(name = "PLANET_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "PLANET_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Planet planet;
 
     @JoinTable(name = "ST_CARRIER_SPACEPORT_LINK",

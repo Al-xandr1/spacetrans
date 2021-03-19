@@ -1,29 +1,32 @@
 package com.company.spacetrans.entity;
 
 import io.jmix.core.Messages;
-import io.jmix.core.metamodel.annotation.DependsOnProperties;
-import io.jmix.core.metamodel.annotation.InstanceName;
-import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.metamodel.annotation.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @JmixEntity(name = "st_Coordinates")
 @Embeddable
 public class Coordinates {
 
-    @Column(name = "2LATITUDE", nullable = false)
     @NotNull
+    //@NumberFormat(pattern = "###.######", decimalSeparator = ".", groupingSeparator = ",") todo LOW fix
+    @NumberFormat(pattern = "###.######", decimalSeparator = ".", groupingSeparator = ",")
+    @Column(name = "LATITUDE", nullable = false)
     private Double latitude;
 
     @NotNull
+    //@NumberFormat(pattern = "###.######", decimalSeparator = ".", groupingSeparator = ",") todo LOW fix
+    @NumberFormat(pattern = "###.######", decimalSeparator = ".", groupingSeparator = ",")
     @Column(name = "LONGITUDE", nullable = false)
     private Double longitude;
 
     @InstanceName
     @DependsOnProperties({"latitude", "longitude"})
-    public String getFullName(Messages messages) {
+    public String getDisplayName(Messages messages) {
         return messages.formatMessage(getClass(), "Coordinates.instanceName", latitude, longitude);
     }
 
