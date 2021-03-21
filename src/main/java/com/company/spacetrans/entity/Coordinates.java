@@ -1,11 +1,13 @@
 package com.company.spacetrans.entity;
 
 import io.jmix.core.Messages;
-import io.jmix.core.metamodel.annotation.*;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
+import io.jmix.core.metamodel.annotation.InstanceName;
+import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.metamodel.annotation.NumberFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @JmixEntity(name = "st_Coordinates")

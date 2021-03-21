@@ -8,13 +8,20 @@
             <map>
               <entry key="main">
                 <value>
-                  <DataStoreSettings>
-                    <option name="generateDdlType" value="CREATE_AND_UPDATE" />
-                    <option name="nameLengthMode" value="POSTGRES" />
-                    <option name="supportedTypes">
-                      <option value="hsql" />
-                    </option>
-                  </DataStoreSettings>
+                  <DataStoreSettings/>
+                </value>
+              </entry>
+            </map>
+          </option>
+        </ModuleSettings>
+      </entry>
+      <entry key="spacetrans.main">
+        <ModuleSettings>
+          <option name="dataStoreOptions">
+            <map>
+              <entry key="main">
+                <value>
+                  <DataStoreSettings/>
                 </value>
               </entry>
             </map>

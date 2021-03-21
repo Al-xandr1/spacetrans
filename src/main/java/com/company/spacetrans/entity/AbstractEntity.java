@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @JmixEntity(name = "st_AbstractEntity")
