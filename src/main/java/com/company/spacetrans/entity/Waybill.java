@@ -42,7 +42,7 @@ public class Waybill {
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "CONSIGNEE_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Customer consignee;
 
     @OnDeleteInverse(DeletePolicy.DENY)

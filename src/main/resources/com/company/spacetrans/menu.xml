@@ -16,6 +16,7 @@
         <item screen="st_Spaceport.browse" caption="msg://com.company.spacetrans.screen.spaceport/spaceportBrowse.caption"/>
         <item screen="st_Company.browse" caption="msg://com.company.spacetrans.screen.company/companyBrowse.caption"/>
         <item screen="st_Individual.browse" caption="msg://com.company.spacetrans.screen.individual/individualBrowse.caption"/>
+        <item screen="st_Waybill.browse" caption="msg://com.company.spacetrans.screen.waybill/waybillBrowse.caption"/>
     </menu>
 
 </menu-config>

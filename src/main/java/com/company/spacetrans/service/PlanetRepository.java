@@ -3,7 +3,7 @@ package com.company.spacetrans.service;
 import com.company.spacetrans.entity.AstronomicalBody;
 import com.company.spacetrans.entity.Atmosphere;
 import com.company.spacetrans.entity.Planet;
-import com.company.spacetrans.service.csv.ImportPlanets;
+import com.company.spacetrans.service.csv.CsvParser;
 import com.company.spacetrans.service.csv.PlanetCSV;
 import io.jmix.core.DataManager;
 import org.springframework.stereotype.Component;
@@ -17,18 +17,18 @@ import java.util.stream.Collectors;
 @Component
 public class PlanetRepository {
 
-    private final ImportPlanets importer;
+    private final CsvParser parser;
 
     private final DataManager dataManager;
 
-    public PlanetRepository(ImportPlanets importer, DataManager dataManager) {
-        this.importer = importer;
+    public PlanetRepository(CsvParser parser, DataManager dataManager) {
+        this.parser = parser;
         this.dataManager = dataManager;
     }
 
     @Transactional
     public boolean importPlanets(byte[] csvBytes) {
-        List<PlanetCSV> planetCSVs = importer.parse(csvBytes);
+        List<PlanetCSV> planetCSVs = parser.parse(csvBytes, PlanetCSV.class);
 
         if (planetCSVs != null) {
             final List<String> names = planetCSVs.stream().map(PlanetCSV::getName).collect(Collectors.toList());
@@ -83,6 +83,7 @@ public class PlanetRepository {
     public static Map<String, List<Planet>> groupByName(Collection<Planet> storedPlanets) {
         return storedPlanets
                 .stream()
+                //todo LOW make mapping to single value
                 .collect(Collectors.groupingBy(AstronomicalBody::getName));
     }
 }

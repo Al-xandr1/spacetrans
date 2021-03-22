@@ -27,7 +27,6 @@ public class Customer {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
-    //todo LOW does the validation work?
     @Email
     @Column(name = "EMAIL")
     private String email;
