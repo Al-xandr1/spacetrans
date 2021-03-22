@@ -23,8 +23,6 @@ public class SpacetransApplication {
         return DataSourceBuilder.create().build();
     }
 
-    //todo  HIGH стоит убрать создание зависимых сущностей без созданных родительских. Понять как
+    //todo  LOW стоит убрать создание зависимых сущностей без созданных родительских. Понять как
     //todo  LOW исключить version из поиска в UI. Понять как
-
-    //todo  BUG Shift+f1 – пробрасывает на документацию, а там 404
 }

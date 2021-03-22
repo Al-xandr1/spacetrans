@@ -1,19 +1,27 @@
 package com.company.spacetrans.entity;
 
 import io.jmix.core.DeletePolicy;
+import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
-import io.jmix.core.metamodel.annotation.DependsOnProperties;
-import io.jmix.core.metamodel.annotation.InstanceName;
-import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.NumberFormat;
+import io.jmix.core.metamodel.annotation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @JmixEntity
 @Table(name = "ST_ATMOSPHERIC_GAS")
 @Entity(name = "st_AtmosphericGas")
-public class AtmosphericGas extends AbstractEntity {
+public class AtmosphericGas {
+
+    @JmixGeneratedValue
+    @Column(name = "ID", nullable = false)
+    @Id
+    private UUID id;
+
+    @Column(name = "VERSION", nullable = false)
+    @Version
+    private Integer version;
 
     @NotNull
     @OnDeleteInverse(DeletePolicy.DENY)
@@ -37,10 +45,28 @@ public class AtmosphericGas extends AbstractEntity {
 
     @InstanceName
     @DependsOnProperties({"gas", "atmosphere"})
+    @Transient
+    @JmixProperty
     public String getDisplayName() {
         return String.format("%s in %s",
                 gas != null ? gas.getName() : null,
                 atmosphere != null ? atmosphere.getDescription() : null);
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Double getVolume() {

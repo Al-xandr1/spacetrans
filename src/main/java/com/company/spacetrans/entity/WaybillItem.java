@@ -2,17 +2,28 @@ package com.company.spacetrans.entity;
 
 import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.EmbeddedParameters;
+import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @JmixEntity
 @Table(name = "ST_WAYBILL_ITEM")
 @Entity(name = "st_WaybillItem")
-public class WaybillItem extends AbstractEntity {
+public class WaybillItem {
+
+    @JmixGeneratedValue
+    @Column(name = "ID", nullable = false)
+    @Id
+    private UUID id;
+
+    @Column(name = "VERSION", nullable = false)
+    @Version
+    private Integer version;
 
     @Column(name = "NUMBER_", nullable = false)
     private Integer number;
@@ -40,6 +51,22 @@ public class WaybillItem extends AbstractEntity {
     @JoinColumn(name = "WAYBILL_ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Waybill waybill;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public BigDecimal getCharge() {
         return charge;

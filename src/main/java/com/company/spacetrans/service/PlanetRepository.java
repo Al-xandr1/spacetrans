@@ -6,7 +6,7 @@ import com.company.spacetrans.entity.Planet;
 import com.company.spacetrans.service.csv.ImportPlanets;
 import com.company.spacetrans.service.csv.PlanetCSV;
 import io.jmix.core.DataManager;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Repository
+@Component
 public class PlanetRepository {
 
     private final ImportPlanets importer;

@@ -3,8 +3,7 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
-        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd" objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="1" author="st">
         <createTable tableName="ST_ATMOSPHERE">
             <column name="ID" type="UUID">
@@ -133,12 +132,12 @@
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ST_MOON"/>
             </column>
-            <column name="NAME" type="VARCHAR(255)"/>
-            <column name="MASS" type="DOUBLE"/>
-            <column name="PICTURE" type="VARCHAR(255)"/>
             <column name="VERSION" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="MASS" type="DOUBLE"/>
+            <column name="PICTURE" type="VARCHAR(255)"/>
             <column name="ATMOSPHERE_ID" type="UUID">
                 <constraints nullable="false"/>
             </column>
@@ -150,12 +149,12 @@
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ST_PLANET"/>
             </column>
-            <column name="NAME" type="VARCHAR(255)"/>
-            <column name="MASS" type="DOUBLE"/>
-            <column name="PICTURE" type="VARCHAR(255)"/>
             <column name="VERSION" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="MASS" type="DOUBLE"/>
+            <column name="PICTURE" type="VARCHAR(255)"/>
             <column name="SEMI_MAJOR_AXIS" type="DOUBLE">
                 <constraints nullable="false"/>
             </column>
@@ -262,8 +261,7 @@
         <addUniqueConstraint columnNames="NAME" constraintName="UC_ST_CARRIER_NAME" tableName="ST_CARRIER"/>
     </changeSet>
     <changeSet id="16" author="st">
-        <addUniqueConstraint columnNames="REGISTRATION_ID" constraintName="UC_ST_COMPANY_REGISTRATION"
-                             tableName="ST_COMPANY"/>
+        <addUniqueConstraint columnNames="REGISTRATION_ID" constraintName="UC_ST_COMPANY_REGISTRATION" tableName="ST_COMPANY"/>
     </changeSet>
     <changeSet id="17" author="st">
         <addUniqueConstraint columnNames="NAME" constraintName="UC_ST_CUSTOMER_NAME" tableName="ST_CUSTOMER"/>
@@ -290,92 +288,75 @@
         <addUniqueConstraint columnNames="REFERENCE" constraintName="UC_ST_WAYBILL_REFERENCE" tableName="ST_WAYBILL"/>
     </changeSet>
     <changeSet id="25" author="st">
-        <addForeignKeyConstraint baseColumnNames="ATMOSPHERE_ID" baseTableName="ST_ATMOSPHERIC_GAS"
-                                 constraintName="FK_STATMOSPHERIC_ON_ATMOSPHERE" onDelete="CASCADE"
-                                 referencedColumnNames="ID" referencedTableName="ST_ATMOSPHERE"/>
+        <addForeignKeyConstraint baseColumnNames="ATMOSPHERE_ID" baseTableName="ST_ATMOSPHERIC_GAS" constraintName="FK_STATMOSPHERIC_ON_ATMOSPHERE"
+                                 onDelete="CASCADE" referencedColumnNames="ID" referencedTableName="ST_ATMOSPHERE"/>
     </changeSet>
     <changeSet id="26" author="st">
-        <addForeignKeyConstraint baseColumnNames="CARRIER_ID" baseTableName="ST_CARRIER_SPACEPORT_LINK"
-                                 constraintName="FK_STCARSPA_ON_CARRIER" referencedColumnNames="ID"
-                                 referencedTableName="ST_CARRIER"/>
+        <addForeignKeyConstraint baseColumnNames="CARRIER_ID" baseTableName="ST_CARRIER_SPACEPORT_LINK" constraintName="FK_STCARSPA_ON_CARRIER"
+                                 referencedColumnNames="ID" referencedTableName="ST_CARRIER"/>
     </changeSet>
     <changeSet id="27" author="st">
-        <addForeignKeyConstraint baseColumnNames="SPACEPORT_ID" baseTableName="ST_CARRIER_SPACEPORT_LINK"
-                                 constraintName="FK_STCARSPA_ON_SPACEPORT" referencedColumnNames="ID"
-                                 referencedTableName="ST_SPACEPORT"/>
+        <addForeignKeyConstraint baseColumnNames="SPACEPORT_ID" baseTableName="ST_CARRIER_SPACEPORT_LINK" constraintName="FK_STCARSPA_ON_SPACEPORT"
+                                 referencedColumnNames="ID" referencedTableName="ST_SPACEPORT"/>
     </changeSet>
     <changeSet id="28" author="st">
-        <addForeignKeyConstraint baseColumnNames="DEPARTURE_PORT_ID" baseTableName="ST_WAYBILL"
-                                 constraintName="FK_STWAYBILL_ON_DEPARTUREPORT" referencedColumnNames="ID"
-                                 referencedTableName="ST_SPACEPORT"/>
+        <addForeignKeyConstraint baseColumnNames="DEPARTURE_PORT_ID" baseTableName="ST_WAYBILL" constraintName="FK_STWAYBILL_ON_DEPARTUREPORT"
+                                 referencedColumnNames="ID" referencedTableName="ST_SPACEPORT"/>
     </changeSet>
     <changeSet id="29" author="st">
-        <addForeignKeyConstraint baseColumnNames="DESTINATION_PORT_ID" baseTableName="ST_WAYBILL"
-                                 constraintName="FK_STWAYBILL_ON_DESTINATIONPOR" referencedColumnNames="ID"
-                                 referencedTableName="ST_SPACEPORT"/>
+        <addForeignKeyConstraint baseColumnNames="DESTINATION_PORT_ID" baseTableName="ST_WAYBILL" constraintName="FK_STWAYBILL_ON_DESTINATIONPOR"
+                                 referencedColumnNames="ID" referencedTableName="ST_SPACEPORT"/>
     </changeSet>
     <changeSet id="30" author="st">
-        <addForeignKeyConstraint baseColumnNames="GAS_ID" baseTableName="ST_ATMOSPHERIC_GAS"
-                                 constraintName="FK_ST_ATMOSPHERIC_GAS_ON_GAS" referencedColumnNames="ID"
-                                 referencedTableName="ST_GAS"/>
+        <addForeignKeyConstraint baseColumnNames="GAS_ID" baseTableName="ST_ATMOSPHERIC_GAS" constraintName="FK_ST_ATMOSPHERIC_GAS_ON_GAS"
+                                 referencedColumnNames="ID" referencedTableName="ST_GAS"/>
     </changeSet>
     <changeSet id="31" author="st">
-        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="ST_COMPANY" constraintName="FK_ST_COMPANY_ON_ID"
-                                 referencedColumnNames="ID" referencedTableName="ST_CUSTOMER"/>
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="ST_COMPANY" constraintName="FK_ST_COMPANY_ON_ID" referencedColumnNames="ID"
+                                 referencedTableName="ST_CUSTOMER"/>
     </changeSet>
     <changeSet id="32" author="st">
-        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="ST_INDIVIDUAL"
-                                 constraintName="FK_ST_INDIVIDUAL_ON_ID" referencedColumnNames="ID"
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="ST_INDIVIDUAL" constraintName="FK_ST_INDIVIDUAL_ON_ID" referencedColumnNames="ID"
                                  referencedTableName="ST_CUSTOMER"/>
     </changeSet>
     <changeSet id="33" author="st">
-        <addForeignKeyConstraint baseColumnNames="ATMOSPHERE_ID" baseTableName="ST_MOON"
-                                 constraintName="FK_ST_MOON_ON_ATMOSPHERE" referencedColumnNames="ID"
-                                 referencedTableName="ST_ATMOSPHERE"/>
+        <addForeignKeyConstraint baseColumnNames="ATMOSPHERE_ID" baseTableName="ST_MOON" constraintName="FK_ST_MOON_ON_ATMOSPHERE"
+                                 referencedColumnNames="ID" referencedTableName="ST_ATMOSPHERE"/>
     </changeSet>
     <changeSet id="34" author="st">
-        <addForeignKeyConstraint baseColumnNames="PLANET_ID" baseTableName="ST_MOON"
-                                 constraintName="FK_ST_MOON_ON_PLANET" referencedColumnNames="ID"
+        <addForeignKeyConstraint baseColumnNames="PLANET_ID" baseTableName="ST_MOON" constraintName="FK_ST_MOON_ON_PLANET" referencedColumnNames="ID"
                                  referencedTableName="ST_PLANET"/>
     </changeSet>
     <changeSet id="35" author="st">
-        <addForeignKeyConstraint baseColumnNames="ATMOSPHERE_ID" baseTableName="ST_PLANET"
-                                 constraintName="FK_ST_PLANET_ON_ATMOSPHERE" referencedColumnNames="ID"
-                                 referencedTableName="ST_ATMOSPHERE"/>
+        <addForeignKeyConstraint baseColumnNames="ATMOSPHERE_ID" baseTableName="ST_PLANET" constraintName="FK_ST_PLANET_ON_ATMOSPHERE"
+                                 referencedColumnNames="ID" referencedTableName="ST_ATMOSPHERE"/>
     </changeSet>
     <changeSet id="36" author="st">
-        <addForeignKeyConstraint baseColumnNames="MOON_ID" baseTableName="ST_SPACEPORT"
-                                 constraintName="FK_ST_SPACEPORT_ON_MOON" referencedColumnNames="ID"
-                                 referencedTableName="ST_MOON"/>
+        <addForeignKeyConstraint baseColumnNames="MOON_ID" baseTableName="ST_SPACEPORT" constraintName="FK_ST_SPACEPORT_ON_MOON"
+                                 referencedColumnNames="ID" referencedTableName="ST_MOON"/>
     </changeSet>
     <changeSet id="37" author="st">
-        <addForeignKeyConstraint baseColumnNames="PLANET_ID" baseTableName="ST_SPACEPORT"
-                                 constraintName="FK_ST_SPACEPORT_ON_PLANET" referencedColumnNames="ID"
-                                 referencedTableName="ST_PLANET"/>
+        <addForeignKeyConstraint baseColumnNames="PLANET_ID" baseTableName="ST_SPACEPORT" constraintName="FK_ST_SPACEPORT_ON_PLANET"
+                                 referencedColumnNames="ID" referencedTableName="ST_PLANET"/>
     </changeSet>
     <changeSet id="38" author="st">
-        <addForeignKeyConstraint baseColumnNames="WAYBILL_ID" baseTableName="ST_WAYBILL_ITEM"
-                                 constraintName="FK_ST_WAYBILL_ITEM_ON_WAYBILL" onDelete="CASCADE"
-                                 referencedColumnNames="ID" referencedTableName="ST_WAYBILL"/>
+        <addForeignKeyConstraint baseColumnNames="WAYBILL_ID" baseTableName="ST_WAYBILL_ITEM" constraintName="FK_ST_WAYBILL_ITEM_ON_WAYBILL"
+                                 onDelete="CASCADE" referencedColumnNames="ID" referencedTableName="ST_WAYBILL"/>
     </changeSet>
     <changeSet id="39" author="st">
-        <addForeignKeyConstraint baseColumnNames="CARRIER_ID" baseTableName="ST_WAYBILL"
-                                 constraintName="FK_ST_WAYBILL_ON_CARRIER" referencedColumnNames="ID"
-                                 referencedTableName="ST_CARRIER"/>
+        <addForeignKeyConstraint baseColumnNames="CARRIER_ID" baseTableName="ST_WAYBILL" constraintName="FK_ST_WAYBILL_ON_CARRIER"
+                                 referencedColumnNames="ID" referencedTableName="ST_CARRIER"/>
     </changeSet>
     <changeSet id="40" author="st">
-        <addForeignKeyConstraint baseColumnNames="CONSIGNEE_ID" baseTableName="ST_WAYBILL"
-                                 constraintName="FK_ST_WAYBILL_ON_CONSIGNEE" referencedColumnNames="ID"
-                                 referencedTableName="ST_CUSTOMER"/>
+        <addForeignKeyConstraint baseColumnNames="CONSIGNEE_ID" baseTableName="ST_WAYBILL" constraintName="FK_ST_WAYBILL_ON_CONSIGNEE"
+                                 referencedColumnNames="ID" referencedTableName="ST_CUSTOMER"/>
     </changeSet>
     <changeSet id="41" author="st">
-        <addForeignKeyConstraint baseColumnNames="CREATOR_ID" baseTableName="ST_WAYBILL"
-                                 constraintName="FK_ST_WAYBILL_ON_CREATOR" onDelete="SET NULL"
+        <addForeignKeyConstraint baseColumnNames="CREATOR_ID" baseTableName="ST_WAYBILL" constraintName="FK_ST_WAYBILL_ON_CREATOR" onDelete="SET NULL"
                                  referencedColumnNames="ID" referencedTableName="ST_USER"/>
     </changeSet>
     <changeSet id="42" author="st">
-        <addForeignKeyConstraint baseColumnNames="SHIPPER_ID" baseTableName="ST_WAYBILL"
-                                 constraintName="FK_ST_WAYBILL_ON_SHIPPER" referencedColumnNames="ID"
-                                 referencedTableName="ST_CUSTOMER"/>
+        <addForeignKeyConstraint baseColumnNames="SHIPPER_ID" baseTableName="ST_WAYBILL" constraintName="FK_ST_WAYBILL_ON_SHIPPER"
+                                 referencedColumnNames="ID" referencedTableName="ST_CUSTOMER"/>
     </changeSet>
 </databaseChangeLog>

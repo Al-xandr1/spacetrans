@@ -1,6 +1,5 @@
 package com.company.spacetrans.entity;
 
-import io.jmix.core.Messages;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
@@ -23,8 +22,8 @@ public class Dimensions {
 
     @InstanceName
     @DependsOnProperties({"height", "width", "length"})
-    public String getDisplayName(Messages messages){
-        return messages.formatMessage(getClass(), "Dimensions.instanceName", height, width, length);
+    public String getDisplayName() {
+        return String.format("(h=%s, w=%s, l=%s)", height, width, length);
     }
 
     public Double getHeight() {

@@ -1,19 +1,27 @@
 package com.company.spacetrans.entity;
 
-import io.jmix.core.Messages;
+import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @JmixEntity
 @Table(name = "ST_DISCOUNTS")
 @Entity(name = "st_Discounts")
-public class Discounts extends AbstractEntity {
+public class Discounts {
+
+    @JmixGeneratedValue
+    @Column(name = "ID", nullable = false)
+    @Id
+    private UUID id;
+
+    @Column(name = "VERSION", nullable = false)
+    @Version
+    private Integer version;
 
     @Column(name = "VALUE_", precision = 19, scale = 2, nullable = false)
     private BigDecimal value;
@@ -21,10 +29,26 @@ public class Discounts extends AbstractEntity {
     @Column(name = "GRADE", nullable = false, unique = true)
     private String grade;
 
-    @DependsOnProperties({"grade", "value"})
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @InstanceName
-    public String getDisplayName(Messages messages) {
-        return messages.formatMessage(getClass(), "Discounts.instanceName", grade, value);
+    @DependsOnProperties({"grade", "value"})
+    public String getDisplayName() {
+        return String.format("Discount for %s is %s", grade, value);
     }
 
     public BigDecimal getValue() {

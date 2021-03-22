@@ -1,6 +1,5 @@
 package com.company.spacetrans.entity;
 
-import io.jmix.core.Messages;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
@@ -28,8 +27,8 @@ public class Coordinates {
 
     @InstanceName
     @DependsOnProperties({"latitude", "longitude"})
-    public String getDisplayName(Messages messages) {
-        return messages.formatMessage(getClass(), "Coordinates.instanceName", latitude, longitude);
+    public String getDisplayName() {
+        return String.format("(lat=%s, long=%s)", latitude, longitude);
     }
 
     public Double getLongitude() {

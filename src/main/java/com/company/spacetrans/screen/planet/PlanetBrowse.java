@@ -8,6 +8,7 @@ import io.jmix.ui.component.SingleFileUploadField;
 import io.jmix.ui.screen.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
 
@@ -19,7 +20,7 @@ public class PlanetBrowse extends StandardLookup<Planet> {
     private static final Logger log = LoggerFactory.getLogger(PlanetBrowse.class);
 
     //todo QA why restricted injection through constructors? throws "Unable to create instance of screen class"
-    @Named
+    @Autowired
     private PlanetRepository planetRepository;
 
     @Named("planetsTable.refresh")
