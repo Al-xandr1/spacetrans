@@ -10,10 +10,12 @@ import io.jmix.ui.action.entitypicker.EntityLookupAction;
 import io.jmix.ui.component.EntityComboBox;
 import io.jmix.ui.component.EntityPicker;
 import io.jmix.ui.component.HasValue;
+import io.jmix.ui.component.TextField;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +69,22 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     @Autowired
     private SpaceportRepository spaceportRepository;
 
+
+    @Named("carrierField.clear")
+    private EntityClearAction carrierFieldClear;
+
+    @Autowired
+    private EntityComboBox<Carrier> carrierField;
+
+    @Autowired
+    private CarrierRepository carrierRepository;
+
+    @Autowired
+    private TextField<Double> totalWeightField;
+
+    @Autowired
+    private TextField<BigDecimal> totalChargeField;
+
     @Subscribe
     public void onInit(InitEvent event) {
         List<AstronomicalBody> astronomicalBodies = new ArrayList<>(planetRepository.findAll());
@@ -111,6 +129,8 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     }
 
     private void onSpaceportFieldChanged(HasValue.ValueChangeEvent<Spaceport> event, EntityComboBox<AstronomicalBody> departureField) {
+        updateCarriersField();
+
         if (!event.isUserOriginated()) {
             return;
         }
@@ -122,6 +142,17 @@ public class WaybillEdit extends StandardEditor<Waybill> {
             if (currentDeparture == null || !currentDeparture.equals(astronomicalBodyForNewPort)) {
                 departureField.setValue(astronomicalBodyForNewPort);
             }
+        }
+    }
+
+    private void updateCarriersField() {
+        carrierField.setEditable(departurePortField.getValue() != null && destinationPortField.getValue() != null);
+        if (carrierField.isEditable()) {
+            carrierField.setOptionsList(carrierRepository.findSuitableCarriers(departurePortField.getValue(), destinationPortField.getValue()));
+            carrierField.setDescription(messages.getMessage("com.company.spacetrans.screen.waybill/CarriersSelectCarrier"));
+        } else {
+            carrierFieldClear.execute();
+            carrierField.setDescription(messages.getMessage("com.company.spacetrans.screen.waybill/CarriersSelectAllPortsAtFirst"));
         }
     }
 

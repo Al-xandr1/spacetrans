@@ -20,8 +20,11 @@
                     <property name="planet" fetchPlan="_instance_name"/>
                 </property>
                 <property name="carrier" fetchPlan="_base"/>
-                <property name="items" fetchPlan="_base">
+                <property name="items" fetchPlan="_instance_name">
                     <property name="dim" fetchPlan="_base"/>
+                    <property name="number"/>
+                    <property name="weight"/>
+                    <property name="charge"/>
                 </property>
             </fetchPlan>
             <loader/>
@@ -101,14 +104,14 @@
                             <action id="clear" type="entity_clear"/>
                         </actions>
                     </entityPicker>
-                    <entityPicker id="carrierField" property="carrier">
+                    <entityComboBox id="carrierField" property="carrier" editable="false"
+                                    description="msg://com.company.spacetrans.screen.waybill/CarriersSelectAllPortsAtFirst">
                         <actions>
-                            <action id="lookup" type="entity_lookup"/>
                             <action id="clear" type="entity_clear"/>
                         </actions>
-                    </entityPicker>
-                    <textField id="totalWeightField" property="totalWeight"/>
-                    <textField id="totalChargeField" property="totalCharge"/>
+                    </entityComboBox>
+                    <textField id="totalWeightField" property="totalWeight" editable="false"/>
+                    <textField id="totalChargeField" property="totalCharge" editable="false"/>
                 </column>
             </form>
             <groupBox id="itemsBox" caption="msg://com.company.spacetrans.entity/Waybill.items">

@@ -5,7 +5,7 @@ import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @JmixEntity
@@ -26,7 +26,7 @@ public class Carrier {
             joinColumns = @JoinColumn(name = "CARRIER_ID"),
             inverseJoinColumns = @JoinColumn(name = "SPACEPORT_ID"))
     @ManyToMany
-    private List<Spaceport> ports;
+    private Set<Spaceport> ports;
 
     public UUID getId() {
         return id;
@@ -48,11 +48,11 @@ public class Carrier {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
-    public List<Spaceport> getPorts() {
+    public Set<Spaceport> getPorts() {
         return ports;
     }
 
-    public void setPorts(List<Spaceport> ports) {
+    public void setPorts(Set<Spaceport> ports) {
         this.ports = ports;
     }
 
