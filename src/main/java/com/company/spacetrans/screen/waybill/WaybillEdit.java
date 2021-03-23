@@ -69,7 +69,6 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     @Autowired
     private SpaceportRepository spaceportRepository;
 
-
     @Named("carrierField.clear")
     private EntityClearAction carrierFieldClear;
 

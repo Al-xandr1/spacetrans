@@ -62,7 +62,7 @@ public class Waybill {
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @Composition
-    @OneToMany(mappedBy = "waybill")
+    @OneToMany(mappedBy = "waybill", fetch = FetchType.EAGER)
     private List<WaybillItem> items;
 
     @Column(name = "TOTAL_WEIGHT")
