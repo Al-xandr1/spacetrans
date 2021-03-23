@@ -52,9 +52,13 @@ public class PlanetRepository {
 
     public List<Planet> findPlanets(List<String> names) {
         return dataManager.load(Planet.class)
-                .query("select p from st_Planet p where p.name in :names")
-                .parameter("names", names)
-                .list();
+                          .query("select p from st_Planet p where p.name in :names")
+                          .parameter("names", names)
+                          .list();
+    }
+
+    public List<Planet> findAll() {
+        return dataManager.load(Planet.class).all().list();
     }
 
     private Planet create(PlanetCSV planetCSV) {

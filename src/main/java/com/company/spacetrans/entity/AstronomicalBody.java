@@ -2,14 +2,9 @@ package com.company.spacetrans.entity;
 
 import io.jmix.core.FileRef;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.metamodel.annotation.InstanceName;
-import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.PropertyDatatype;
+import io.jmix.core.metamodel.annotation.*;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.util.UUID;
 
 @JmixEntity(name = "st_AstronomicalBody")
@@ -25,7 +20,6 @@ public class AstronomicalBody {
     @Version
     private Integer version;
 
-    @InstanceName
     @Column(name = "NAME", unique = true)
     private String name;
 
@@ -35,6 +29,14 @@ public class AstronomicalBody {
     @PropertyDatatype("fileRef")
     @Column(name = "PICTURE")
     private FileRef picture;
+
+    @DependsOnProperties({"name"})
+    @InstanceName
+    @JmixProperty
+    @Transient
+    public String getDisplayName() {
+        return String.format("%s (%S)", name, getClass().getSimpleName());
+    }
 
     public UUID getId() {
         return id;

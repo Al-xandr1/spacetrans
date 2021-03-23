@@ -1,13 +1,9 @@
 package com.company.spacetrans.screen.waybill;
 
-import com.company.spacetrans.entity.Company;
-import com.company.spacetrans.entity.Customer;
-import com.company.spacetrans.entity.Individual;
-import com.company.spacetrans.entity.Waybill;
+import com.company.spacetrans.entity.*;
 import com.company.spacetrans.screen.company.CompanyBrowse;
 import com.company.spacetrans.screen.individual.IndividualBrowse;
-import com.company.spacetrans.service.CompanyRepository;
-import com.company.spacetrans.service.IndividualRepository;
+import com.company.spacetrans.service.*;
 import io.jmix.core.Messages;
 import io.jmix.ui.action.entitypicker.EntityClearAction;
 import io.jmix.ui.action.entitypicker.EntityLookupAction;
@@ -18,6 +14,7 @@ import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 
 @UiController("st_Waybill.edit")
@@ -48,6 +45,85 @@ public class WaybillEdit extends StandardEditor<Waybill> {
 
     @Autowired
     private Messages messages;
+
+    @Autowired
+    private EntityComboBox<AstronomicalBody> departureField;
+
+    @Autowired
+    private EntityPicker<Spaceport> departurePortField;
+
+    @Autowired
+    private EntityComboBox<AstronomicalBody> destinationField;
+
+    @Autowired
+    private EntityPicker<Spaceport> destinationPortField;
+
+    @Autowired
+    private PlanetRepository planetRepository;
+
+    @Autowired
+    private MoonRepository moonRepository;
+
+    @Autowired
+    private SpaceportRepository spaceportRepository;
+
+    @Subscribe
+    public void onInit(InitEvent event) {
+        List<AstronomicalBody> astronomicalBodies = new ArrayList<>(planetRepository.findAll());
+        astronomicalBodies.addAll(moonRepository.findAll());
+
+        departureField.setOptionsList(astronomicalBodies);
+        destinationField.setOptionsList(astronomicalBodies);
+    }
+
+    @Subscribe("departureField")
+    public void onDepartureFieldValueChange(HasValue.ValueChangeEvent<AstronomicalBody> event) {
+        onAstronomicalBodyFieldChanged(event, departurePortField);
+    }
+
+    @Subscribe("destinationField")
+    public void onDestinationFieldValueChange(HasValue.ValueChangeEvent<AstronomicalBody> event) {
+        onAstronomicalBodyFieldChanged(event, destinationPortField);
+    }
+
+    private void onAstronomicalBodyFieldChanged(HasValue.ValueChangeEvent<AstronomicalBody> event, EntityPicker<Spaceport> destinationPortField) {
+        if (!event.isUserOriginated()) {
+            return;
+        }
+
+        AstronomicalBody destination = event.getValue();
+        if (destination != null) {
+            Spaceport defaultSpaceport = spaceportRepository.findDefaultSpaceport(destination);
+            if (destinationPortField.getValue() == null || !destinationPortField.getValue().equals(defaultSpaceport)) {
+                destinationPortField.setValue(defaultSpaceport);
+            }
+        }
+    }
+
+    @Subscribe("departurePortField")
+    public void onDeparturePortFieldValueChange(HasValue.ValueChangeEvent<Spaceport> event) {
+        onSpaceportFieldChanged(event, departureField);
+    }
+
+    @Subscribe("destinationPortField")
+    public void onDestinationPortFieldValueChange(HasValue.ValueChangeEvent<Spaceport> event) {
+        onSpaceportFieldChanged(event, destinationField);
+    }
+
+    private void onSpaceportFieldChanged(HasValue.ValueChangeEvent<Spaceport> event, EntityComboBox<AstronomicalBody> departureField) {
+        if (!event.isUserOriginated()) {
+            return;
+        }
+
+        Spaceport departurePort = event.getValue();
+        if (departurePort != null) {
+            AstronomicalBody currentDeparture = departureField.getValue();
+            AstronomicalBody astronomicalBodyForNewPort = spaceportRepository.getAstronomicalBody(departurePort);
+            if (currentDeparture == null || !currentDeparture.equals(astronomicalBodyForNewPort)) {
+                departureField.setValue(astronomicalBodyForNewPort);
+            }
+        }
+    }
 
     @Subscribe("shipperTypeChooser")
     @SuppressWarnings("unchecked")

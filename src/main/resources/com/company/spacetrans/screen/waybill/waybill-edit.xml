@@ -77,12 +77,24 @@
                             <action id="clear" type="entity_clear"/>
                         </actions>
                     </entityPicker>
+                    <entityComboBox id="departureField" metaClass="st_AstronomicalBody"
+                                    caption="msg://com.company.spacetrans.screen.waybill/Departure">
+                        <actions>
+                            <action id="clear" type="entity_clear"/>
+                        </actions>
+                    </entityComboBox>
                     <entityPicker id="departurePortField" property="departurePort">
                         <actions>
                             <action id="lookup" type="entity_lookup"/>
                             <action id="clear" type="entity_clear"/>
                         </actions>
                     </entityPicker>
+                    <entityComboBox id="destinationField" metaClass="st_AstronomicalBody"
+                                    caption="msg://com.company.spacetrans.screen.waybill/Destination">
+                        <actions>
+                            <action id="clear" type="entity_clear"/>
+                        </actions>
+                    </entityComboBox>
                     <entityPicker id="destinationPortField" property="destinationPort">
                         <actions>
                             <action id="lookup" type="entity_lookup"/>
