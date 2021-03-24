@@ -49,4 +49,15 @@ public class Dimensions {
     public void setLength(Double length) {
         this.length = length;
     }
+
+    public boolean isFilled() {
+        return height != null && width != null && length != null;
+    }
+
+    public Double getVolume() {
+        if (isFilled()) {
+            return height * width * length;
+        }
+        return null;
+    }
 }

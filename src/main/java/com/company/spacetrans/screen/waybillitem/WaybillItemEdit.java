@@ -3,11 +3,14 @@ package com.company.spacetrans.screen.waybillitem;
 import com.company.spacetrans.entity.Waybill;
 import com.company.spacetrans.entity.WaybillItem;
 import com.company.spacetrans.service.WaybillItemRepository;
+import com.company.spacetrans.service.utility.ChargeUtility;
 import io.jmix.ui.component.Button;
 import io.jmix.ui.component.HasValue;
 import io.jmix.ui.component.TextField;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.math.BigDecimal;
 
 @UiController("st_WaybillItem.edit")
 @UiDescriptor("waybill-item-edit.xml")
@@ -25,6 +28,21 @@ public class WaybillItemEdit extends StandardEditor<WaybillItem> {
 
     @Autowired
     private Button downButton;
+
+    @Autowired
+    private TextField<Double> weightField;
+
+    @Autowired
+    private TextField<Double> dimHeightField;
+
+    @Autowired
+    private TextField<Double> dimWidthField;
+
+    @Autowired
+    private TextField<Double> dimLengthField;
+
+    @Autowired
+    private TextField<BigDecimal> chargeField;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<WaybillItem> event) {
@@ -54,13 +72,35 @@ public class WaybillItemEdit extends StandardEditor<WaybillItem> {
 
     @Subscribe("upButton")
     public void onUpButtonClick(Button.ClickEvent event) {
-        WaybillItem waybillItem = getEditedEntity();
-        waybillItemRepository.updateWaybillItemNumber(waybillItem, WaybillItemRepository.IncDec.DECREMENT);
+        waybillItemRepository.updateWaybillItemNumber(getEditedEntity(), WaybillItemRepository.IncDec.DECREMENT);
     }
 
     @Subscribe("downButton")
     public void onDownButtonClick(Button.ClickEvent event) {
-        WaybillItem waybillItem = getEditedEntity();
-        waybillItemRepository.updateWaybillItemNumber(waybillItem, WaybillItemRepository.IncDec.INCREMENT);
+        waybillItemRepository.updateWaybillItemNumber(getEditedEntity(), WaybillItemRepository.IncDec.INCREMENT);
+    }
+
+    @Subscribe("weightField")
+    public void onWeightFieldValueChange(HasValue.ValueChangeEvent<Double> event) {
+        updateCharge(getEditedEntity());
+    }
+
+    @Subscribe("dimHeightField")
+    public void onDimHeightFieldValueChange(HasValue.ValueChangeEvent<Double> event) {
+        updateCharge(getEditedEntity());
+    }
+
+    @Subscribe("dimWidthField")
+    public void onDimWidthFieldValueChange(HasValue.ValueChangeEvent<Double> event) {
+        updateCharge(getEditedEntity());
+    }
+
+    @Subscribe("dimLengthField")
+    public void onDimLengthFieldValueChange(HasValue.ValueChangeEvent<Double> event) {
+        updateCharge(getEditedEntity());
+    }
+
+    private void updateCharge(WaybillItem item) {
+        chargeField.setValue(ChargeUtility.calculateCharge(item));
     }
 }
