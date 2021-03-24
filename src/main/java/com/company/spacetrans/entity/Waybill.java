@@ -6,8 +6,11 @@ import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import org.eclipse.persistence.descriptors.changetracking.ChangeTracker;
 
 import javax.persistence.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +18,7 @@ import java.util.UUID;
 @JmixEntity
 @Table(name = "ST_WAYBILL")
 @Entity(name = "st_Waybill")
-public class Waybill {
+public class Waybill implements ChangeTracker {
 
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
@@ -166,4 +169,27 @@ public class Waybill {
     public void setReference(String reference) {
         this.reference = reference;
     }
+
+    //region todo BUG "It's a kind of magic!"
+    //              java.lang.ClassCastException: class com.company.spacetrans.entity.Waybill cannot be cast to class org.eclipse.persistence.descriptors.changetracking.ChangeTracker (com.company.spacetrans.entity.Waybill and org.eclipse.persistence.descriptors.changetracking.ChangeTracker are in unnamed module of loader 'app')
+    //	                    at io.jmix.eclipselink.impl.EntityChangedEventManager.internalCollect(EntityChangedEventManager.java:135)
+    @Transient
+    protected transient PropertyChangeListener _persistence_listener;
+
+    @Override
+    public PropertyChangeListener _persistence_getPropertyChangeListener() {
+        return this._persistence_listener;
+    }
+
+    @Override
+    public void _persistence_setPropertyChangeListener(PropertyChangeListener var1) {
+        this._persistence_listener = var1;
+    }
+
+    public void _persistence_propertyChange(String var1, Object var2, Object var3) {
+        if (this._persistence_listener != null && var2 != var3) {
+            this._persistence_listener.propertyChange(new PropertyChangeEvent(this, var1, var2, var3));
+        }
+    }
+    //endregion
 }

@@ -7,16 +7,14 @@ import com.company.spacetrans.service.*;
 import io.jmix.core.Messages;
 import io.jmix.ui.action.entitypicker.EntityClearAction;
 import io.jmix.ui.action.entitypicker.EntityLookupAction;
-import io.jmix.ui.component.EntityComboBox;
-import io.jmix.ui.component.EntityPicker;
-import io.jmix.ui.component.HasValue;
-import io.jmix.ui.component.TextField;
+import io.jmix.ui.component.*;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @UiController("st_Waybill.edit")
@@ -83,6 +81,18 @@ public class WaybillEdit extends StandardEditor<Waybill> {
 
     @Autowired
     private TextField<BigDecimal> totalChargeField;
+
+    @Autowired
+    private Button upButton;
+
+    @Autowired
+    private Button downButton;
+
+    @Autowired
+    private Table<WaybillItem> itemsTable;
+
+    @Autowired
+    private WaybillItemRepository waybillItemRepository;
 
     @Subscribe
     public void onInit(InitEvent event) {
@@ -209,6 +219,39 @@ public class WaybillEdit extends StandardEditor<Waybill> {
                 default:
                     throw new RuntimeException("Unreachable statement");
             }
+        }
+    }
+
+    @Subscribe("itemsTable")
+    public void onItemsTableSelection(Table.SelectionEvent<WaybillItem> event) {
+        upButton.setEnabled(!event.getSelected().isEmpty());
+        downButton.setEnabled(!event.getSelected().isEmpty());
+    }
+
+
+    @Subscribe("upButton")
+    public void onUpButtonClick(Button.ClickEvent event) {
+        Iterator<WaybillItem> iterator = itemsTable.getSelected().iterator();
+        if (iterator.hasNext()) {
+            waybillItemRepository.updateWaybillItemNumber(iterator.next(), WaybillItemRepository.IncDec.DECREMENT);
+            itemsTable.repaint();
+        }
+    }
+
+    @Subscribe("downButton")
+    public void onDownButtonClick(Button.ClickEvent event) {
+        Iterator<WaybillItem> iterator = itemsTable.getSelected().iterator();
+        if (iterator.hasNext()) {
+            waybillItemRepository.updateWaybillItemNumber(iterator.next(), WaybillItemRepository.IncDec.INCREMENT);
+            itemsTable.repaint();
+        }
+    }
+
+    @Subscribe("removeButton")
+    public void onRemoveButtonClick(Button.ClickEvent event) {
+        Iterator<WaybillItem> iterator = itemsTable.getSelected().iterator();
+        if (iterator.hasNext()) {
+            waybillItemRepository.deleteItem(iterator.next());
         }
     }
 }

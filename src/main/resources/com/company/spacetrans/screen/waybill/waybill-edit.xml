@@ -25,6 +25,9 @@
                     <property name="number"/>
                     <property name="weight"/>
                     <property name="charge"/>
+                    <property name="waybill" fetchPlan="_base">
+                        <property name="items" fetchPlan="_base"/>
+                    </property>
                 </property>
             </fetchPlan>
             <loader/>
@@ -122,9 +125,8 @@
                         <action id="remove" type="remove"/>
                     </actions>
                     <columns>
-                        <column id="name"/>
-                        <column id="version"/>
                         <column id="number"/>
+                        <column id="name"/>
                         <column id="weight"/>
                         <column id="charge"/>
                         <column id="dim"/>
@@ -132,7 +134,11 @@
                     <buttonsPanel>
                         <button action="itemsTable.create"/>
                         <button action="itemsTable.edit"/>
-                        <button action="itemsTable.remove"/>
+                        <button id="removeButton" action="itemsTable.remove"/>
+                        <button id="upButton" primary="false" enable="false"
+                                caption="msg://com.company.spacetrans.screen.waybillitem/waybillItemEdit.upButton"/>
+                        <button id="downButton" primary="false" enable="false"
+                                caption="msg://com.company.spacetrans.screen.waybillitem/waybillItemEdit.downButton"/>
                     </buttonsPanel>
                 </table>
             </groupBox>

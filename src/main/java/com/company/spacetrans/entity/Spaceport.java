@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-@JmixEntity(name = "st_Spaceport")
+@JmixEntity
 @Table(name = "ST_SPACEPORT")
 @Entity(name = "st_Spaceport")
 public class Spaceport {
