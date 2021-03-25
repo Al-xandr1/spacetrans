@@ -93,9 +93,7 @@ class SpacetransApplicationTests {
         Waybill waybill = new Waybill();
         waybill.setReference("12345");
         waybill.setCreator(new User());
-        waybill.setShipper(new Individual() {{
-            setGrade(CustomerGrade.SILVER);
-        }});
+        waybill.setShipper(new Individual());
         waybill.setConsignee(new Individual());
         waybill.setDeparturePort(new Spaceport());
         waybill.setDestinationPort(new Spaceport());
