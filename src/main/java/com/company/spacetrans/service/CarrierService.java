@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class CarrierRepository {
+public class CarrierService {
 
     private final DataManager dataManager;
 
-    public CarrierRepository(DataManager dataManager) {
+    public CarrierService(DataManager dataManager) {
         this.dataManager = dataManager;
     }
 

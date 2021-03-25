@@ -16,13 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-public class SpaceportRepository {
+public class SpaceportService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SpaceportRepository.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SpaceportService.class);
 
     private final DataManager dataManager;
 
-    public SpaceportRepository(DataManager dataManager) {
+    public SpaceportService(DataManager dataManager) {
         this.dataManager = dataManager;
     }
 

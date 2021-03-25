@@ -20,6 +20,8 @@ import java.util.UUID;
 @Entity(name = "st_Waybill")
 public class Waybill implements ChangeTracker {
 
+    public static final String ITEMS = "items";
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id

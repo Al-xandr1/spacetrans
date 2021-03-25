@@ -15,13 +15,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class PlanetRepository {
+public class PlanetService {
 
     private final CsvParser parser;
 
     private final DataManager dataManager;
 
-    public PlanetRepository(CsvParser parser, DataManager dataManager) {
+    public PlanetService(CsvParser parser, DataManager dataManager) {
         this.parser = parser;
         this.dataManager = dataManager;
     }

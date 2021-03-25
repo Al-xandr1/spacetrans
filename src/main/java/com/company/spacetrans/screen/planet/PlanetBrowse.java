@@ -1,7 +1,7 @@
 package com.company.spacetrans.screen.planet;
 
 import com.company.spacetrans.entity.Planet;
-import com.company.spacetrans.service.PlanetRepository;
+import com.company.spacetrans.service.PlanetService;
 import io.jmix.ui.action.list.RefreshAction;
 import io.jmix.ui.component.HasValue;
 import io.jmix.ui.component.SingleFileUploadField;
@@ -21,7 +21,7 @@ public class PlanetBrowse extends StandardLookup<Planet> {
 
     //todo QA why restricted injection through constructors? throws "Unable to create instance of screen class"
     @Autowired
-    private PlanetRepository planetRepository;
+    private PlanetService planetService;
 
     @Named("planetsTable.refresh")
     private RefreshAction planetsTableRefresh;
@@ -31,7 +31,7 @@ public class PlanetBrowse extends StandardLookup<Planet> {
         log.info("Import start");
 
         if (event.getValue() != null) {
-            planetRepository.importPlanets(event.getValue());
+            planetService.importPlanets(event.getValue());
         }
     }
 

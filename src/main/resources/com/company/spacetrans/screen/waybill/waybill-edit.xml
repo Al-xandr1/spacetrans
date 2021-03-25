@@ -125,7 +125,7 @@
                         <action id="remove" type="remove"/>
                     </actions>
                     <columns>
-                        <column id="number"/>
+                        <column id="number" sort="ASCENDING"/>
                         <column id="name"/>
                         <column id="weight"/>
                         <column id="charge"/>

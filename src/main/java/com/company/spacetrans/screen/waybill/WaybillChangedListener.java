@@ -1,0 +1,63 @@
+package com.company.spacetrans.screen.waybill;
+
+import com.company.spacetrans.entity.Waybill;
+import com.company.spacetrans.entity.WaybillItem;
+import com.company.spacetrans.service.WaybillItemService;
+import io.jmix.core.DataManager;
+import io.jmix.core.event.EntityChangedEvent;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+@Component
+public class WaybillChangedListener {
+
+    public static final String UNKNOWN_CHANGED = "unknown";
+
+    private final DataManager dataManager;
+
+    private final WaybillItemService waybillItemService;
+
+    private final PropertyChangeSupport propertyChangeSupport;
+
+    public WaybillChangedListener(@NotNull DataManager dataManager, @NotNull WaybillItemService waybillItemService) {
+        this.dataManager = dataManager;
+        this.waybillItemService = waybillItemService;
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
+    }
+
+    @EventListener
+    public void waybillChanged(@NotNull EntityChangedEvent<Waybill> event) {
+        dataManager.load(event.getEntityId().getEntityClass())
+                   .id(event.getEntityId().getValue())
+                   .optional()
+                   .ifPresent(w -> {
+                       waybillItemService.updateTotals(w);
+                       propertyChangeSupport.firePropertyChange(UNKNOWN_CHANGED, null, w);
+                   });
+    }
+
+    @EventListener
+    public void waybillItemChanged(@NotNull EntityChangedEvent<WaybillItem> event) {
+        dataManager.load(event.getEntityId().getEntityClass())
+                   .id(event.getEntityId().getValue())
+                   .fetchPlan(fetchPlanBuilder -> fetchPlanBuilder.name("waybill"))
+                   .optional()
+                   .ifPresent(w -> {
+                       waybillItemService.updateTotals(w.getWaybill());
+                       propertyChangeSupport.firePropertyChange(UNKNOWN_CHANGED, null, w);
+                   });
+
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+}

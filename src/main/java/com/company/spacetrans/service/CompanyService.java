@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CompanyRepository {
+public class CompanyService {
 
     private final DataManager dataManager;
 
-    public CompanyRepository(DataManager dataManager) {
+    public CompanyService(DataManager dataManager) {
         this.dataManager = dataManager;
     }
 

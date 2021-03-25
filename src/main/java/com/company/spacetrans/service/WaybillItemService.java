@@ -5,23 +5,41 @@ import com.company.spacetrans.entity.WaybillItem;
 import io.jmix.core.DataManager;
 import io.jmix.core.common.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 import java.util.function.Function;
 
 @Component
-public class WaybillItemRepository {
+public class WaybillItemService {
 
     public static final int START_NUM = 1;
 
     public static final Function<Integer, Integer> NUM_GEN = num -> num + 1;
 
+    public static final double VOLUME_UNIT_COAST = 0.1;
+
+    public static final double WEIGHT_UNIT_COAST = 1;
+
     private final DataManager dataManager;
 
+    @Autowired
+    private DiscountsService discountsService;
 
-    public WaybillItemRepository(@NotNull DataManager dataManager) {
+
+    public WaybillItemService(@NotNull DataManager dataManager) {
         this.dataManager = dataManager;
+    }
+
+    public static BigDecimal calculateCharge(@NotNull WaybillItem item) {
+        BigDecimal charge = null;
+        if (item.getWeight() != null && item.getDim().isFilled()) {
+            charge = new BigDecimal(item.getWeight() * WEIGHT_UNIT_COAST + item.getDim().getVolume() * VOLUME_UNIT_COAST);
+        }
+        return charge;
     }
 
     @NotNull
@@ -39,10 +57,10 @@ public class WaybillItemRepository {
     @NotNull
     private Optional<Integer> findMaxNumber(@NotNull Waybill waybill) {
         return Optional.of(waybill)
-                       .flatMap(w -> w.getItems()
-                                      .stream()
-                                      .map(WaybillItem::getNumber)
-                                      .max(Integer::compareTo)
+                       .map(Waybill::getItems)
+                       .flatMap(items -> items.stream()
+                                              .map(WaybillItem::getNumber)
+                                              .max(Integer::compareTo)
                        );
     }
 
@@ -93,6 +111,33 @@ public class WaybillItemRepository {
 
     public void deleteItem(@NotNull WaybillItem item) {
         item.getWaybill().getItems().stream().filter(i -> i.getNumber() > item.getNumber()).forEach(i -> i.setNumber(i.getNumber() - 1));
+    }
+
+    public void updateCharge(@NotNull WaybillItem item) {
+        item.setCharge(calculateCharge(item));
+    }
+
+    public void updateTotals(@NotNull Waybill waybill) {
+        double totalWeight = 0;
+        BigDecimal accumulatedCharge = new BigDecimal(0);
+        if (waybill.getItems() != null) {
+            for (WaybillItem item : waybill.getItems()) {
+                totalWeight += item.getWeight();
+                accumulatedCharge = accumulatedCharge.add(item.getCharge());
+            }
+            waybill.setTotalWeight(totalWeight);
+
+            final BigDecimal totalCharge = accumulatedCharge;
+            waybill.setTotalCharge(Optional.ofNullable(waybill.getShipper())
+                                           .flatMap(shipper -> discountsService.findDiscount(shipper.getGrade()))
+                                           .map(discounts -> BigDecimal.valueOf(100)
+                                                                       .subtract(discounts.getValue())
+                                                                       .max(BigDecimal.valueOf(0))
+                                                                       .multiply(totalCharge)
+                                                                       .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN))
+                                           .orElse(totalCharge)
+            );
+        }
     }
 
     public enum IncDec {

@@ -12,7 +12,9 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @JmixEntity
-@Table(name = "ST_WAYBILL_ITEM")
+@Table(name = "ST_WAYBILL_ITEM", indexes = {
+        @Index(name = "IDX_ST_WAYBILL_ITEM_NAME_WBID", columnList = "NAME, WAYBILL_ID", unique = true)
+})
 @Entity(name = "st_WaybillItem")
 public class WaybillItem {
 
@@ -29,7 +31,7 @@ public class WaybillItem {
     private Integer number;
 
     @InstanceName
-    @Column(name = "NAME", nullable = false, unique = true)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @Column(name = "WEIGHT")

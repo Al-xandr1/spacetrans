@@ -1,21 +1,21 @@
 package com.company.spacetrans.service;
 
-import com.company.spacetrans.entity.Individual;
+import com.company.spacetrans.entity.Moon;
 import io.jmix.core.DataManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class IndividualRepository {
+public class MoonService {
 
     private final DataManager dataManager;
 
-    public IndividualRepository(DataManager dataManager) {
+    public MoonService(DataManager dataManager) {
         this.dataManager = dataManager;
     }
 
-    public List<Individual> findAll() {
-        return dataManager.load(Individual.class).all().list();
+    public List<Moon> findAll() {
+        return dataManager.load(Moon.class).all().list();
     }
 }
