@@ -5,7 +5,6 @@ import com.company.spacetrans.entity.WaybillItem;
 import io.jmix.core.DataManager;
 import io.jmix.core.common.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -26,12 +25,12 @@ public class WaybillItemService {
 
     private final DataManager dataManager;
 
-    @Autowired
-    private DiscountsService discountsService;
+    private final DiscountsService discountsService;
 
 
-    public WaybillItemService(@NotNull DataManager dataManager) {
+    public WaybillItemService(@NotNull DataManager dataManager, @NotNull DiscountsService discountsService) {
         this.dataManager = dataManager;
+        this.discountsService = discountsService;
     }
 
     public static BigDecimal calculateCharge(@NotNull WaybillItem item) {
@@ -123,6 +122,7 @@ public class WaybillItemService {
         if (waybill.getItems() != null) {
             for (WaybillItem item : waybill.getItems()) {
                 totalWeight += item.getWeight();
+                updateCharge(item);
                 accumulatedCharge = accumulatedCharge.add(item.getCharge());
             }
             waybill.setTotalWeight(totalWeight);
@@ -134,7 +134,7 @@ public class WaybillItemService {
                                                                        .subtract(discounts.getValue())
                                                                        .max(BigDecimal.valueOf(0))
                                                                        .multiply(totalCharge)
-                                                                       .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN))
+                                                                       .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP))
                                            .orElse(totalCharge)
             );
         }
