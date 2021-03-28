@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://jmix.io/schema/ui/menu">
 
-    <menu id="application" caption="msg://com.company.spacetrans/menu.application" insertBefore="administration">
-        <item screen="st_User.browse" caption="msg://com.company.spacetrans.screen.user/UserBrowse.caption"/>
+    <menu id="planetary-system" caption="msg://com.company.spacetrans/menu.planetarySystem" insertBefore="administration">
+        <item screen="st_Atmosphere.browse" caption="msg://com.company.spacetrans.screen.atmosphere/atmosphereBrowse.caption"/>
+        <item screen="st_AtmosphericGas.browse" caption="msg://com.company.spacetrans.screen.atmosphericgas/atmosphericGasBrowse.caption"/>
         <item screen="st_Gas.browse" caption="msg://com.company.spacetrans.screen.gas/gasBrowse.caption"/>
-        <item screen="st_AtmosphericGas.browse"
-              caption="msg://com.company.spacetrans.screen.atmosphericgas/atmosphericGasBrowse.caption"/>
-        <item screen="st_Atmosphere.browse"
-              caption="msg://com.company.spacetrans.screen.atmosphere/atmosphereBrowse.caption"/>
         <item screen="st_Moon.browse" caption="msg://com.company.spacetrans.screen.moon/moonBrowse.caption"/>
         <item screen="st_Planet.browse" caption="msg://com.company.spacetrans.screen.planet/planetBrowse.caption"/>
-        <item screen="st_Carrier.browse" caption="msg://com.company.spacetrans.screen.carrier/carrierBrowse.caption"/>
-        <item screen="st_Discounts.browse"
-              caption="msg://com.company.spacetrans.screen.discounts/discountsBrowse.caption"/>
         <item screen="st_Spaceport.browse" caption="msg://com.company.spacetrans.screen.spaceport/spaceportBrowse.caption"/>
-        <item screen="st_Company.browse" caption="msg://com.company.spacetrans.screen.company/companyBrowse.caption"/>
+    </menu>
+
+    <menu id="waybill-accounting" caption="msg://com.company.spacetrans/menu.waybillAccounting" insertAfter="planetary-system">
         <item screen="st_Individual.browse" caption="msg://com.company.spacetrans.screen.individual/individualBrowse.caption"/>
+        <item screen="st_Company.browse" caption="msg://com.company.spacetrans.screen.company/companyBrowse.caption"/>
+        <item screen="st_Discounts.browse" caption="msg://com.company.spacetrans.screen.discounts/discountsBrowse.caption"/>
+        <item screen="st_Carrier.browse" caption="msg://com.company.spacetrans.screen.carrier/carrierBrowse.caption"/>
         <item screen="st_Waybill.browse" caption="msg://com.company.spacetrans.screen.waybill/waybillBrowse.caption"/>
         <item screen="st_WaybillItem.browse" caption="msg://com.company.spacetrans.screen.waybillitem/waybillItemBrowse.caption"/>
     </menu>
 
+    <menu id="users" caption="msg://com.company.spacetrans/menu.users" insertAfter="waybill-accounting">
+        <item screen="st_User.browse" caption="msg://com.company.spacetrans.screen.user/UserBrowse.caption"/>
+    </menu>
 </menu-config>
