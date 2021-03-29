@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @JmixEntity
-@Table(name = "ST_WAYBILL_ITEM", indexes = {
-        @Index(name = "IDX_ST_WAYBILL_ITEM_NAME_WBID", columnList = "NAME, WAYBILL_ID", unique = true)
+@Table(name = "ST_WAYBILL_ITEM", uniqueConstraints = {
+        @UniqueConstraint(name = "IDX_ST_WAYBILL_ITEM_NAME_WBID", columnNames = {"NAME", "WAYBILL_ID"}),
 })
 @Entity(name = "st_WaybillItem")
 public class WaybillItem {

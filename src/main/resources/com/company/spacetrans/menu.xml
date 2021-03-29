@@ -16,7 +16,6 @@
         <item screen="st_Discounts.browse" caption="msg://com.company.spacetrans.screen.discounts/discountsBrowse.caption"/>
         <item screen="st_Carrier.browse" caption="msg://com.company.spacetrans.screen.carrier/carrierBrowse.caption"/>
         <item screen="st_Waybill.browse" caption="msg://com.company.spacetrans.screen.waybill/waybillBrowse.caption"/>
-        <item screen="st_WaybillItem.browse" caption="msg://com.company.spacetrans.screen.waybillitem/waybillItemBrowse.caption"/>
     </menu>
 
     <menu id="users" caption="msg://com.company.spacetrans/menu.users" insertAfter="waybill-accounting">

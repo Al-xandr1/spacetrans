@@ -22,6 +22,8 @@ public class Waybill implements ChangeTracker {
 
     public static final String ITEMS = "items";
 
+    public static final String NUMBER = "number";
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id

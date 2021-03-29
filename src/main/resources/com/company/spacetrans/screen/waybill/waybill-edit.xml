@@ -54,12 +54,7 @@
             <form id="form" dataContainer="waybillDc">
                 <column width="350px">
                     <textField id="referenceField" property="reference"/>
-                    <entityPicker id="creatorField" property="creator">
-                        <actions>
-                            <action id="lookup" type="entity_lookup"/>
-                            <action id="clear" type="entity_clear"/>
-                        </actions>
-                    </entityPicker>
+                    <entityPicker id="creatorField" property="creator" editable="false"/>
                     <!--todo LOW wrap into something for better style -->
                     <radioButtonGroup id="shipperTypeChooser" orientation="horizontal"
                                       optionsEnum="com.company.spacetrans.screen.waybill.CustomerType"
@@ -123,6 +118,12 @@
                         <action id="create" type="create"/>
                         <action id="edit" type="edit"/>
                         <action id="remove" type="remove"/>
+                        <action id="up"
+                                caption="msg://com.company.spacetrans.screen.waybillitem/waybillItemEdit.upButton"
+                                trackSelection="true"/>
+                        <action id="down"
+                                caption="msg://com.company.spacetrans.screen.waybillitem/waybillItemEdit.downButton"
+                                trackSelection="true"/>
                     </actions>
                     <columns>
                         <column id="number" sort="ASCENDING"/>
@@ -135,10 +136,8 @@
                         <button action="itemsTable.create"/>
                         <button action="itemsTable.edit"/>
                         <button id="removeButton" action="itemsTable.remove"/>
-                        <button id="upButton" primary="false" enable="false"
-                                caption="msg://com.company.spacetrans.screen.waybillitem/waybillItemEdit.upButton"/>
-                        <button id="downButton" primary="false" enable="false"
-                                caption="msg://com.company.spacetrans.screen.waybillitem/waybillItemEdit.downButton"/>
+                        <button id="upButton" primary="false" action="itemsTable.up"/>
+                        <button id="downButton" primary="false" action="itemsTable.down"/>
                     </buttonsPanel>
                 </table>
             </groupBox>

@@ -36,4 +36,18 @@ public class SpaceportBrowse extends StandardLookup<Spaceport> implements Proper
             }
         }
     }
+
+/*  alternative method of table refreshing after changing 'isDefault' attribute
+    @Subscribe(id = "spaceportsDc", target = Target.DATA_CONTAINER)
+    public void onSpaceportsDcCollectionChange(CollectionContainer.CollectionChangeEvent<Spaceport> event) {
+        CollectionChangeType changeType = event.getChangeType();
+        switch (changeType) {
+            case ADD_ITEMS:
+            case REMOVE_ITEMS:
+            case SET_ITEM: {
+                spaceportsTableRefresh.execute();
+            }
+        }
+    }
+*/
 }

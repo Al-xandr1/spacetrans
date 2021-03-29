@@ -34,7 +34,9 @@ public class SpaceportChangedListener {
         if (changes.isChanged(Spaceport.IS_DEFAULT)) {
             Id<Spaceport> entityId = event.getEntityId();
 
-            Spaceport changedSpaceport = dataManager.load(entityId.getEntityClass()).id(entityId.getValue()).one();
+            Spaceport changedSpaceport = dataManager.load(entityId.getEntityClass())
+                                                    .id(entityId.getValue())
+                                                    .one();
             if (changedSpaceport.getIsDefault()) {
                 spaceportService.unsetDefaultOtherSpaceports(changedSpaceport);
                 propertyChangeSupport

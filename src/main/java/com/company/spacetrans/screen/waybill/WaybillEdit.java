@@ -3,33 +3,36 @@ package com.company.spacetrans.screen.waybill;
 import com.company.spacetrans.entity.*;
 import com.company.spacetrans.screen.company.CompanyBrowse;
 import com.company.spacetrans.screen.individual.IndividualBrowse;
+import com.company.spacetrans.security.DatabaseUserRepository;
 import com.company.spacetrans.service.*;
+import com.vaadin.server.VaadinServletRequest;
 import io.jmix.core.Messages;
-import io.jmix.ui.RemoveOperation;
+import io.jmix.core.metamodel.model.MetaPropertyPath;
+import io.jmix.ui.action.Action;
 import io.jmix.ui.action.entitypicker.EntityClearAction;
 import io.jmix.ui.action.entitypicker.EntityLookupAction;
-import io.jmix.ui.component.*;
+import io.jmix.ui.component.EntityComboBox;
+import io.jmix.ui.component.EntityPicker;
+import io.jmix.ui.component.HasValue;
+import io.jmix.ui.component.Table;
+import io.jmix.ui.model.CollectionContainer;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 @UiController("st_Waybill.edit")
 @UiDescriptor("waybill-edit.xml")
 @EditedEntityContainer("waybillDc")
-public class WaybillEdit extends StandardEditor<Waybill> implements PropertyChangeListener {
+public class WaybillEdit extends StandardEditor<Waybill> {
 
     @Autowired
     private EntityComboBox<Customer> shipperField;
-
-    @Named("shipperField.clear")
-    private EntityClearAction shipperFieldClear;
 
     @Autowired
     private EntityPicker<Customer> consigneeField;
@@ -80,29 +83,13 @@ public class WaybillEdit extends StandardEditor<Waybill> implements PropertyChan
     private CarrierService carrierService;
 
     @Autowired
-    private TextField<Double> totalWeightField;
-
-    @Autowired
-    private TextField<BigDecimal> totalChargeField;
-
-    @Autowired
-    private Button upButton;
-
-    @Autowired
-    private Button downButton;
-
-    @Autowired
     private Table<WaybillItem> itemsTable;
 
     @Autowired
     private WaybillItemService waybillItemService;
 
     @Autowired
-    private WaybillChangedListener waybillChangedListener;
-
-    public WaybillEdit() {
-        addAfterInitListener(event -> waybillChangedListener.addPropertyChangeListener(this));
-    }
+    private DatabaseUserRepository databaseUserRepository;
 
     @Subscribe
     public void onInit(InitEvent event) {
@@ -111,6 +98,13 @@ public class WaybillEdit extends StandardEditor<Waybill> implements PropertyChan
 
         departureField.setOptionsList(astronomicalBodies);
         destinationField.setOptionsList(astronomicalBodies);
+    }
+
+    @Subscribe
+    public void onInitEntity(InitEntityEvent<Waybill> event) {
+        Principal userPrincipal = VaadinServletRequest.getCurrent().getUserPrincipal();
+        User currentUser = databaseUserRepository.loadUserByUsername(userPrincipal.getName());
+        event.getEntity().setCreator(currentUser);
     }
 
     @Subscribe("departureField")
@@ -186,7 +180,7 @@ public class WaybillEdit extends StandardEditor<Waybill> implements PropertyChan
                     shipperField.setOptionsList((List) individualService.findAll());
                     shipperField.setDescription(messages.getMessage("com.company.spacetrans.screen.waybill/ShipperEntityComboboxIndividual"));
                     if (shipperField.getValue() != null && !(shipperField.getValue() instanceof Individual)) {
-                        shipperFieldClear.execute();
+                        getEditedEntity().setShipper(null);
                     }
                     break;
 
@@ -194,7 +188,7 @@ public class WaybillEdit extends StandardEditor<Waybill> implements PropertyChan
                     shipperField.setOptionsList((List) companyService.findAll());
                     shipperField.setDescription(messages.getMessage("com.company.spacetrans.screen.waybill/ShipperEntityComboboxCompany"));
                     if (shipperField.getValue() != null && !(shipperField.getValue() instanceof Company)) {
-                        shipperFieldClear.execute();
+                        getEditedEntity().setShipper(null);
                     }
                     break;
 
@@ -232,37 +226,36 @@ public class WaybillEdit extends StandardEditor<Waybill> implements PropertyChan
         }
     }
 
-    @Subscribe("itemsTable")
-    public void onItemsTableSelection(Table.SelectionEvent<WaybillItem> event) {
-        upButton.setEnabled(!event.getSelected().isEmpty());
-        downButton.setEnabled(!event.getSelected().isEmpty());
-    }
-
-
-    @Subscribe("upButton")
-    public void onUpButtonClick(Button.ClickEvent event) {
+    @Subscribe("itemsTable.up")
+    public void onItemsTableUp(Action.ActionPerformedEvent event) {
         Iterator<WaybillItem> iterator = itemsTable.getSelected().iterator();
         if (iterator.hasNext()) {
-            waybillItemService.updateWaybillItemNumber(iterator.next(), WaybillItemService.IncDec.DECREMENT);
-            itemsTable.repaint();
+            WaybillItem waybillItem = iterator.next();
+            waybillItemService.updateWaybillItemNumber(waybillItem, WaybillItemService.IncDec.DECREMENT);
+            updateRepresentation(waybillItem);
         }
     }
 
-    @Subscribe("downButton")
-    public void onDownButtonClick(Button.ClickEvent event) {
+    @Subscribe("itemsTable.down")
+    public void onItemsTableDown(Action.ActionPerformedEvent event) {
         Iterator<WaybillItem> iterator = itemsTable.getSelected().iterator();
         if (iterator.hasNext()) {
-            waybillItemService.updateWaybillItemNumber(iterator.next(), WaybillItemService.IncDec.INCREMENT);
-            itemsTable.repaint();
+            WaybillItem waybillItem = iterator.next();
+            waybillItemService.updateWaybillItemNumber(waybillItem, WaybillItemService.IncDec.INCREMENT);
+            updateRepresentation(waybillItem);
         }
     }
 
-    @Subscribe("removeButton")
-    public void onRemoveButtonClick(Button.ClickEvent event) {
-        Iterator<WaybillItem> iterator = itemsTable.getSelected().iterator();
-        if (iterator.hasNext()) {
-            waybillItemService.deleteItem(iterator.next());
+    private void updateRepresentation(WaybillItem waybillItem) {
+        Table.SortInfo sortInfo = itemsTable.getSortInfo();
+        if (sortInfo != null) {
+            if (Arrays.asList(((MetaPropertyPath) sortInfo.getPropertyId()).getPath()).contains(Waybill.NUMBER)) {
+                itemsTable.sort(Waybill.NUMBER, sortInfo.getAscending() ? Table.SortDirection.ASCENDING : Table.SortDirection.DESCENDING);
+            }
+        } else {
+            itemsTable.sort(Waybill.NUMBER, Table.SortDirection.ASCENDING);
         }
+        itemsTable.requestFocus(waybillItem, Waybill.NUMBER);
     }
 
     @Subscribe("shipperField")
@@ -270,23 +263,16 @@ public class WaybillEdit extends StandardEditor<Waybill> implements PropertyChan
         waybillItemService.updateTotals(getEditedEntity());
     }
 
-    @Install(to = "itemsTable.create", subject = "afterCommitHandler")
-    private void itemsTableCreateAfterCommitHandler(WaybillItem waybillItem) {
-        waybillItemService.updateTotals(getEditedEntity());
-    }
-
-    @Install(to = "itemsTable.remove", subject = "afterActionPerformedHandler")
-    private void itemsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<WaybillItem> afterActionPerformedEvent) {
-        waybillItemService.updateTotals(getEditedEntity());
-    }
-
-    @Install(to = "itemsTable.edit", subject = "afterCommitHandler")
-    private void itemsTableEditAfterCommitHandler(WaybillItem waybillItem) {
-        waybillItemService.updateTotals(getEditedEntity());
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent event) {
-        getEditedEntityLoader().load();
+    @Subscribe(id = "itemsDc", target = Target.DATA_CONTAINER)
+    public void onItemsDcCollectionChange(CollectionContainer.CollectionChangeEvent<WaybillItem> event) {
+        switch (event.getChangeType()) {
+            case REMOVE_ITEMS: {
+                event.getChanges().forEach(waybillItemService::updateWaybillItemNumbers);
+            }
+            case SET_ITEM:
+            case ADD_ITEMS: {
+                waybillItemService.updateTotals(getEditedEntity());
+            }
+        }
     }
 }

@@ -44,13 +44,11 @@ public class WaybillChangedListener {
     public void waybillItemChanged(@NotNull EntityChangedEvent<WaybillItem> event) {
         dataManager.load(event.getEntityId().getEntityClass())
                    .id(event.getEntityId().getValue())
-                   .fetchPlan(fetchPlanBuilder -> fetchPlanBuilder.name("waybill"))
                    .optional()
-                   .ifPresent(w -> {
-                       waybillItemService.updateTotals(w.getWaybill());
-                       propertyChangeSupport.firePropertyChange(UNKNOWN_CHANGED, null, w);
+                   .ifPresent(item -> {
+                       waybillItemService.updateTotals(item.getWaybill());
+                       propertyChangeSupport.firePropertyChange(UNKNOWN_CHANGED, null, item);
                    });
-
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

@@ -108,8 +108,8 @@ public class WaybillItemService {
                    .ifPresent(item -> item.setNumber(currentNumber));
     }
 
-    public void deleteItem(@NotNull WaybillItem item) {
-        item.getWaybill().getItems().stream().filter(i -> i.getNumber() > item.getNumber()).forEach(i -> i.setNumber(i.getNumber() - 1));
+    public void updateWaybillItemNumbers(@NotNull WaybillItem removed) {
+        removed.getWaybill().getItems().stream().filter(i -> i.getNumber() > removed.getNumber()).forEach(i -> i.setNumber(i.getNumber() - 1));
     }
 
     public void updateCharge(@NotNull WaybillItem item) {

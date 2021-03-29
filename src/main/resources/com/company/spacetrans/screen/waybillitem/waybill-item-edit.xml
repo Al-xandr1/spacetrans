@@ -51,12 +51,6 @@
                 <textField id="dimWidthField" property="dim.width"/>
                 <textField id="dimLengthField" property="dim.length"/>
                 <textField id="chargeField" property="charge" editable="false"/>
-                <entityPicker id="waybillField" property="waybill">
-                    <actions>
-                        <action id="lookup" type="entity_lookup"/>
-                        <action id="clear" type="entity_clear"/>
-                    </actions>
-                </entityPicker>
             </column>
         </form>
         <hbox id="editActions" spacing="true">
