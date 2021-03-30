@@ -36,7 +36,7 @@ public interface OperatorAccessRole extends SimpleAccessRole {
     @ScreenPolicy(screenIds = "st_WaybillItem.edit")
     @ScreenPolicy(screenIds = "st_User.browse")
     @ScreenPolicy(screenIds = "st_User.edit")
-    //@MenuPolicy(menuIds = {"waybill-accounting", "users"}) //todo BUG HIGH this variant does not work. Is it wright?
+    //@MenuPolicy(menuIds = {"waybill-accounting", "users"}) //todo BUG this variant does not work. Is it wright?
     @MenuPolicy(menuIds = "*")
     @SpecificPolicy(resources = "*")
     void operatorAccess();

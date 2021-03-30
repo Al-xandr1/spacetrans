@@ -43,6 +43,9 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     runtimeOnly 'org.postgresql:postgresql'
+
+    implementation "io.jmix.reports:jmix-reports-starter:1.0.0-SNAPSHOT"
+    implementation "io.jmix.reports:jmix-reports-ui-starter:1.0.0-SNAPSHOT"
 }
 
 test {

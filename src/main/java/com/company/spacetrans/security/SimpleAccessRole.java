@@ -28,7 +28,7 @@ public interface SimpleAccessRole {
     @ScreenPolicy(screenIds = "st_Moon.browse")
     @ScreenPolicy(screenIds = "st_Planet.browse")
     @ScreenPolicy(screenIds = "st_Spaceport.browse")
-    //@MenuPolicy(menuIds = "planetary-system") //todo BUG HIGH this variant does not work
+    //@MenuPolicy(menuIds = "planetary-system") //todo BUG this variant does not work
     @MenuPolicy(menuIds = "*")
     @SpecificPolicy(resources = "*")
     void baseAccess();
