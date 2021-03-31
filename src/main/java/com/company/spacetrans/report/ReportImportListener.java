@@ -33,7 +33,7 @@ public class ReportImportListener {
     public void applicationContextStarted(ApplicationReadyEvent event) {
         try {
             byte[] reportsZip;
-            try (InputStream is = resourceLoader.getResource("classpath:reports/Report for entity _Waybill_.zip").getInputStream()) {
+            try (InputStream is = resourceLoader.getResource("classpath:reports/Reports.zip").getInputStream()) {
                 Objects.requireNonNull(is);
                 reportsZip = IOUtils.toByteArray(is);
             }
