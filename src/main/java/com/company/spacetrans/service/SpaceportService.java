@@ -60,9 +60,8 @@ public class SpaceportService {
     @Nullable
     public Spaceport findDefaultSpaceport(AstronomicalBody astronomicalBody) {
         FluentLoader.ByQuery<Spaceport> query = findAllSpaceportsQuery(astronomicalBody);
-        PropertyCondition isDefaultCondition = new PropertyCondition();
-        isDefaultCondition.setProperty(Spaceport.IS_DEFAULT);
-        List<Spaceport> defaultSpaceports = query.condition(isDefaultCondition).list();
+        List<Spaceport> defaultSpaceports = query.condition(PropertyCondition.equal(Spaceport.IS_DEFAULT, Boolean.TRUE))
+                                                 .list();
         switch (defaultSpaceports.size()) {
             case 0:
                 return null;
