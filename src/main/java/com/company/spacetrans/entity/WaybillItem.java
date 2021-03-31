@@ -18,6 +18,8 @@ import java.util.UUID;
 @Entity(name = "st_WaybillItem")
 public class WaybillItem {
 
+    public static final String NUMBER = "number";
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id

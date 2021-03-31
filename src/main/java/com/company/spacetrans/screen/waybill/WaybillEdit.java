@@ -249,13 +249,13 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     private void updateRepresentation(WaybillItem waybillItem) {
         Table.SortInfo sortInfo = itemsTable.getSortInfo();
         if (sortInfo != null) {
-            if (Arrays.asList(((MetaPropertyPath) sortInfo.getPropertyId()).getPath()).contains(Waybill.NUMBER)) {
-                itemsTable.sort(Waybill.NUMBER, sortInfo.getAscending() ? Table.SortDirection.ASCENDING : Table.SortDirection.DESCENDING);
+            if (Arrays.asList(((MetaPropertyPath) sortInfo.getPropertyId()).getPath()).contains(WaybillItem.NUMBER)) {
+                itemsTable.sort(WaybillItem.NUMBER, sortInfo.getAscending() ? Table.SortDirection.ASCENDING : Table.SortDirection.DESCENDING);
             }
         } else {
-            itemsTable.sort(Waybill.NUMBER, Table.SortDirection.ASCENDING);
+            itemsTable.sort(WaybillItem.NUMBER, Table.SortDirection.ASCENDING);
         }
-        itemsTable.requestFocus(waybillItem, Waybill.NUMBER);
+        itemsTable.requestFocus(waybillItem, WaybillItem.NUMBER);
     }
 
     @Subscribe("shipperField")

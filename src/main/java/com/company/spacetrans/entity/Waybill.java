@@ -20,11 +20,23 @@ import java.util.UUID;
 @Entity(name = "st_Waybill")
 public class Waybill implements ChangeTracker {
 
-    public static final String ITEMS = "items";
+    public static final String ID = "id";
 
-    public static final String NUMBER = "number";
+    public static final String REFERENCE = "reference";
 
     public static final String CREATOR = "creator";
+
+    public static final String SHIPPER = "shipper";
+
+    public static final String CONSIGNEE = "consignee";
+
+    public static final String DEPARTURE_PORT = "departurePort";
+
+    public static final String DESTINATION_PORT = "destinationPort";
+
+    public static final String CARRIER = "carrier";
+
+    public static final String ITEMS = "items";
 
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
@@ -41,32 +53,32 @@ public class Waybill implements ChangeTracker {
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @JoinColumn(name = "CREATOR_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User creator;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "SHIPPER_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Customer shipper;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "CONSIGNEE_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Customer consignee;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "DEPARTURE_PORT_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Spaceport departurePort;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "DESTINATION_PORT_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Spaceport destinationPort;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @JoinColumn(name = "CARRIER_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Carrier carrier;
 
     @OnDeleteInverse(DeletePolicy.DENY)

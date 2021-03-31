@@ -15,7 +15,11 @@ import java.util.UUID;
 @Entity(name = "st_Spaceport")
 public class Spaceport {
 
+    public static final String ID = "id";
+
     public static final String IS_DEFAULT = "isDefault";
+
+    public static final String NAME = "name";
 
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
