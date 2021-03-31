@@ -5,7 +5,6 @@ import com.company.spacetrans.service.DiscountsService;
 import com.company.spacetrans.service.WaybillItemService;
 import io.jmix.core.DataManager;
 import io.jmix.core.FluentLoader;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -83,13 +82,12 @@ class SpacetransApplicationTests {
         }
     }
 
-    @NotNull
-    private static BigDecimal scaled(@NotNull BigDecimal decimal) {
+    private static BigDecimal scaled(BigDecimal decimal) {
         return decimal.setScale(SCALE, RoundingMode.HALF_UP);
     }
 
-    @NotNull
-    private static Waybill createWaybill(@NotNull WaybillItemService waybillItemService) {
+
+    private static Waybill createWaybill(WaybillItemService waybillItemService) {
         Waybill waybill = new Waybill();
         waybill.setReference("12345");
         waybill.setCreator(new User());
@@ -110,14 +108,14 @@ class SpacetransApplicationTests {
         return waybill;
     }
 
-    @NotNull
-    private static WaybillItem createWaybillItem(@NotNull Waybill waybill,
-                                                 @NotNull String name,
+
+    private static WaybillItem createWaybillItem(Waybill waybill,
+                                                 String name,
                                                  double weight,
                                                  double height,
                                                  double width,
                                                  double length,
-                                                 @NotNull WaybillItemService waybillItemService) {
+                                                 WaybillItemService waybillItemService) {
         WaybillItem item = new WaybillItem();
         item.setNumber(waybillItemService.generateNextNumber(waybill));
         item.setName(name);
@@ -131,7 +129,7 @@ class SpacetransApplicationTests {
         return item;
     }
 
-    @NotNull
+
     @SuppressWarnings("unchecked")
     private static WaybillItemService buildWaybillItemService() {
         DataManager dataManager = mock(DataManager.class);

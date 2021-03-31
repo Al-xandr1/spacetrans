@@ -8,9 +8,6 @@ import io.jmix.core.event.EntityChangedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 @Component
 public class WaybillChangedListener {
 
@@ -20,12 +17,9 @@ public class WaybillChangedListener {
 
     private final WaybillItemService waybillItemService;
 
-    private final PropertyChangeSupport propertyChangeSupport;
-
     public WaybillChangedListener(DataManager dataManager, WaybillItemService waybillItemService) {
         this.dataManager = dataManager;
         this.waybillItemService = waybillItemService;
-        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     @EventListener
@@ -33,10 +27,7 @@ public class WaybillChangedListener {
         dataManager.load(event.getEntityId().getEntityClass())
                    .id(event.getEntityId().getValue())
                    .optional()
-                   .ifPresent(w -> {
-                       waybillItemService.updateTotals(w);
-                       propertyChangeSupport.firePropertyChange(UNKNOWN_CHANGED, null, w);
-                   });
+                   .ifPresent(waybillItemService::updateTotals);
     }
 
     @EventListener
@@ -44,17 +35,6 @@ public class WaybillChangedListener {
         dataManager.load(event.getEntityId().getEntityClass())
                    .id(event.getEntityId().getValue())
                    .optional()
-                   .ifPresent(item -> {
-                       waybillItemService.updateTotals(item.getWaybill());
-                       propertyChangeSupport.firePropertyChange(UNKNOWN_CHANGED, null, item);
-                   });
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+                   .ifPresent(item -> waybillItemService.updateTotals(item.getWaybill()));
     }
 }

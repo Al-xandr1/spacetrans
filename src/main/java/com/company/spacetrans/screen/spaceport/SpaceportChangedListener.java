@@ -6,11 +6,10 @@ import io.jmix.core.DataManager;
 import io.jmix.core.Id;
 import io.jmix.core.event.AttributeChanges;
 import io.jmix.core.event.EntityChangedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 @Component
 public class SpaceportChangedListener {
@@ -19,12 +18,16 @@ public class SpaceportChangedListener {
 
     private final SpaceportService spaceportService;
 
-    private final PropertyChangeSupport propertyChangeSupport;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+//    todo  QA this does not work, because listeners are disabled in process of screen detaching
+//    @Autowired
+//    private UiEventPublisher uiEventPublisher;
 
     public SpaceportChangedListener(DataManager dataManager, SpaceportService spaceportService) {
         this.dataManager = dataManager;
         this.spaceportService = spaceportService;
-        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     @EventListener
@@ -38,17 +41,16 @@ public class SpaceportChangedListener {
                                                     .one();
             if (changedSpaceport.getIsDefault()) {
                 spaceportService.unsetDefaultOtherSpaceports(changedSpaceport);
-                propertyChangeSupport
-                        .firePropertyChange(Spaceport.IS_DEFAULT, changes.getOldValue(Spaceport.IS_DEFAULT), changedSpaceport.getIsDefault());
+                applicationEventPublisher.publishEvent(new UIEntityChangedEvent<>(this, event));
+//                uiEventPublisher.publishEvent(
+//                        new UIEntityChangedEvent<>(this,
+//                                                   Id.of(changedSpaceport),
+//                                                   EntityChangedEvent.Type.UPDATED,
+//                                                   changes,
+//                                                   UIEntityChangedEvent.extractMetaClass(event))
+//                );
+
             }
         }
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
     }
 }

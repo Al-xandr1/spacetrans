@@ -10,6 +10,7 @@ import io.jmix.core.querycondition.PropertyCondition;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +57,7 @@ public class SpaceportService {
         return findAllSpaceportsQuery(astronomicalBody).list();
     }
 
+    @Nullable
     public Spaceport findDefaultSpaceport(AstronomicalBody astronomicalBody) {
         FluentLoader.ByQuery<Spaceport> query = findAllSpaceportsQuery(astronomicalBody);
         PropertyCondition isDefaultCondition = new PropertyCondition();
