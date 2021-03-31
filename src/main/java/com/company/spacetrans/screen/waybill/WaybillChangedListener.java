@@ -5,7 +5,6 @@ import com.company.spacetrans.entity.WaybillItem;
 import com.company.spacetrans.service.WaybillItemService;
 import io.jmix.core.DataManager;
 import io.jmix.core.event.EntityChangedEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -23,14 +22,14 @@ public class WaybillChangedListener {
 
     private final PropertyChangeSupport propertyChangeSupport;
 
-    public WaybillChangedListener(@NotNull DataManager dataManager, @NotNull WaybillItemService waybillItemService) {
+    public WaybillChangedListener(DataManager dataManager, WaybillItemService waybillItemService) {
         this.dataManager = dataManager;
         this.waybillItemService = waybillItemService;
         this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     @EventListener
-    public void waybillChanged(@NotNull EntityChangedEvent<Waybill> event) {
+    public void waybillChanged(EntityChangedEvent<Waybill> event) {
         dataManager.load(event.getEntityId().getEntityClass())
                    .id(event.getEntityId().getValue())
                    .optional()
@@ -41,7 +40,7 @@ public class WaybillChangedListener {
     }
 
     @EventListener
-    public void waybillItemChanged(@NotNull EntityChangedEvent<WaybillItem> event) {
+    public void waybillItemChanged(EntityChangedEvent<WaybillItem> event) {
         dataManager.load(event.getEntityId().getEntityClass())
                    .id(event.getEntityId().getValue())
                    .optional()

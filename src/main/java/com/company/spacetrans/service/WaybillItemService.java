@@ -4,7 +4,7 @@ import com.company.spacetrans.entity.Waybill;
 import com.company.spacetrans.entity.WaybillItem;
 import io.jmix.core.DataManager;
 import io.jmix.core.common.util.Preconditions;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -28,12 +28,13 @@ public class WaybillItemService {
     private final DiscountsService discountsService;
 
 
-    public WaybillItemService(@NotNull DataManager dataManager, @NotNull DiscountsService discountsService) {
+    public WaybillItemService(DataManager dataManager, DiscountsService discountsService) {
         this.dataManager = dataManager;
         this.discountsService = discountsService;
     }
 
-    public static BigDecimal calculateCharge(@NotNull WaybillItem item) {
+    @Nullable
+    public static BigDecimal calculateCharge(WaybillItem item) {
         BigDecimal charge = null;
         if (item.getWeight() != null && item.getDim().isFilled()) {
             charge = new BigDecimal(item.getWeight() * WEIGHT_UNIT_COAST + item.getDim().getVolume() * VOLUME_UNIT_COAST);
@@ -41,20 +42,19 @@ public class WaybillItemService {
         return charge;
     }
 
-    @NotNull
-    public Integer generateNextNumber(@NotNull Waybill waybill) {
+    public Integer generateNextNumber(Waybill waybill) {
         return generateNextNumber(waybill, NUM_GEN);
     }
 
-    @NotNull
-    public Integer generateNextNumber(@NotNull Waybill waybill, Function<Integer, Integer> numberGenerator) {
+
+    public Integer generateNextNumber(Waybill waybill, Function<Integer, Integer> numberGenerator) {
         return findMaxNumber(waybill)
                 .map(numberGenerator)
                 .orElse(START_NUM);
     }
 
-    @NotNull
-    private Optional<Integer> findMaxNumber(@NotNull Waybill waybill) {
+
+    private Optional<Integer> findMaxNumber(Waybill waybill) {
         return Optional.of(waybill)
                        .map(Waybill::getItems)
                        .flatMap(items -> items.stream()
@@ -63,15 +63,15 @@ public class WaybillItemService {
                        );
     }
 
-    @NotNull
-    public Integer generateNumberDb(@NotNull Waybill waybill) {
+
+    public Integer generateNumberDb(Waybill waybill) {
         return findMaxNumberDb(waybill)
                 .map(NUM_GEN)
                 .orElse(START_NUM);
     }
 
-    @NotNull
-    private Optional<Integer> findMaxNumberDb(@NotNull Waybill waybill) {
+
+    private Optional<Integer> findMaxNumberDb(Waybill waybill) {
         return Optional.of(waybill)
                        .flatMap(w -> dataManager
                                .loadValue("SELECT max(w.number) FROM st_WaybillItem w WHERE w.waybill = :waybill GROUP BY w.waybill", Integer.class)
@@ -80,7 +80,7 @@ public class WaybillItemService {
                        );
     }
 
-    public void updateWaybillItemNumber(@NotNull WaybillItem waybillItem, @NotNull IncDec incDec) {
+    public void updateWaybillItemNumber(WaybillItem waybillItem, IncDec incDec) {
         final Integer currentNumber = waybillItem.getNumber();
         Preconditions.checkNotNullArgument(currentNumber);
 
@@ -108,15 +108,15 @@ public class WaybillItemService {
                    .ifPresent(item -> item.setNumber(currentNumber));
     }
 
-    public void updateWaybillItemNumbers(@NotNull WaybillItem removed) {
+    public void updateWaybillItemNumbers(WaybillItem removed) {
         removed.getWaybill().getItems().stream().filter(i -> i.getNumber() > removed.getNumber()).forEach(i -> i.setNumber(i.getNumber() - 1));
     }
 
-    public void updateCharge(@NotNull WaybillItem item) {
+    public void updateCharge(WaybillItem item) {
         item.setCharge(calculateCharge(item));
     }
 
-    public void updateTotals(@NotNull Waybill waybill) {
+    public void updateTotals(Waybill waybill) {
         double totalWeight = 0;
         BigDecimal accumulatedCharge = new BigDecimal(0);
         if (waybill.getItems() != null) {

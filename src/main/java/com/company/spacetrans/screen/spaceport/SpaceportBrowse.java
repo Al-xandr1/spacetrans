@@ -1,14 +1,10 @@
 package com.company.spacetrans.screen.spaceport;
 
 import com.company.spacetrans.entity.Spaceport;
-import io.jmix.ui.action.list.RefreshAction;
-import io.jmix.ui.screen.LookupComponent;
-import io.jmix.ui.screen.StandardLookup;
-import io.jmix.ui.screen.UiController;
-import io.jmix.ui.screen.UiDescriptor;
+import io.jmix.ui.model.CollectionLoader;
+import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Named;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -20,34 +16,24 @@ public class SpaceportBrowse extends StandardLookup<Spaceport> implements Proper
     @Autowired
     private SpaceportChangedListener spaceportChangedListener;
 
-    @Named("spaceportsTable.refresh")
-    private RefreshAction spaceportsTableRefresh;
+    @Autowired
+    private CollectionLoader<Spaceport> spaceportsDl;
 
-    public SpaceportBrowse() {
-        addAfterInitListener(event -> spaceportChangedListener.addPropertyChangeListener(this));
+    @Subscribe
+    protected void onAfterInit(AfterInitEvent event) {
+        spaceportChangedListener.addPropertyChangeListener(this);
+    }
+
+    @Subscribe
+    public void onBeforeClose(BeforeCloseEvent event) {
+        spaceportChangedListener.removePropertyChangeListener(this);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         String propertyName = event.getPropertyName();
-        switch (propertyName) {
-            case Spaceport.IS_DEFAULT: {
-                spaceportsTableRefresh.execute();
-            }
+        if (Spaceport.IS_DEFAULT.equals(propertyName)) {
+            spaceportsDl.load();
         }
     }
-
-/*  alternative method of table refreshing after changing 'isDefault' attribute
-    @Subscribe(id = "spaceportsDc", target = Target.DATA_CONTAINER)
-    public void onSpaceportsDcCollectionChange(CollectionContainer.CollectionChangeEvent<Spaceport> event) {
-        CollectionChangeType changeType = event.getChangeType();
-        switch (changeType) {
-            case ADD_ITEMS:
-            case REMOVE_ITEMS:
-            case SET_ITEM: {
-                spaceportsTableRefresh.execute();
-            }
-        }
-    }
-*/
 }
