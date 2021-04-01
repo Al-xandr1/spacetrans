@@ -1,11 +1,7 @@
 package com.company.spacetrans.service;
 
-import com.company.spacetrans.entity.Customer;
-import com.company.spacetrans.entity.Spaceport;
-import com.company.spacetrans.entity.User;
-import com.company.spacetrans.entity.Waybill;
+import com.company.spacetrans.entity.*;
 import io.jmix.core.DataManager;
-import io.jmix.core.FetchPlanBuilder;
 import io.jmix.core.FluentLoader;
 import io.jmix.core.querycondition.LogicalCondition;
 import io.jmix.core.querycondition.PropertyCondition;
@@ -20,7 +16,6 @@ import javax.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 @Component
 public class ReportUtils {
@@ -45,7 +40,12 @@ public class ReportUtils {
         ReportUtils.instance = null;
     }
 
-    public List<Map<String, Object>> loadData(@Nullable User creator, @Nullable Customer shipper, @Nullable Customer consignee) {
+    public List<Map<String, Object>> loadData(@Nullable User creator,
+                                              @Nullable Customer shipper,
+                                              @Nullable Customer consignee,
+                                              @Nullable Spaceport departure,
+                                              @Nullable Spaceport destination,
+                                              @Nullable Carrier carrier) {
         LogicalCondition andCondition = LogicalCondition.and();
         if (creator != null) {
             andCondition.add(PropertyCondition.equal(Waybill.CREATOR, creator));
@@ -55,6 +55,15 @@ public class ReportUtils {
         }
         if (consignee != null) {
             andCondition.add(PropertyCondition.equal(Waybill.CONSIGNEE, consignee));
+        }
+        if (departure != null) {
+            andCondition.add(PropertyCondition.equal(Waybill.DEPARTURE_PORT, departure));
+        }
+        if (destination != null) {
+            andCondition.add(PropertyCondition.equal(Waybill.DESTINATION_PORT, destination));
+        }
+        if (carrier != null) {
+            andCondition.add(PropertyCondition.equal(Waybill.CARRIER, carrier));
         }
 
         FluentLoader<Waybill> load = dataManager.load(Waybill.class);
@@ -76,27 +85,14 @@ public class ReportUtils {
             map.put("waybill_departure_port", w.getDeparturePort());
             map.put("waybill_destination_port", w.getDestinationPort());
             map.put("waybill_carrier", w.getCarrier());
+            map.put("waybill_total_weight", w.getTotalWeight());
+            map.put("waybill_total_charge", w.getTotalCharge());
             result.add(map);
         }
 
         LOG.info("Report data loaded: User = {}", creator);
 
         return result;
-    }
-
-    //todo HIGH learn how build fetch plans
-    private Consumer<FetchPlanBuilder> buildFetchPlanConfigurer() {
-        return fetchPlanBuilder -> {
-            Consumer<FetchPlanBuilder> spaceportBuilder = fb -> fb.add(Spaceport.ID, Spaceport.NAME);
-            fetchPlanBuilder.addAll(Waybill.ID,
-                                    Waybill.REFERENCE,
-                                    Waybill.CREATOR,
-                                    Waybill.SHIPPER,
-                                    Waybill.CONSIGNEE,
-                                    Waybill.CARRIER)
-                            .add(Waybill.DEPARTURE_PORT, spaceportBuilder)
-                            .add(Waybill.DESTINATION_PORT, spaceportBuilder);
-        };
     }
 
     public static ReportUtils getInstance() {
