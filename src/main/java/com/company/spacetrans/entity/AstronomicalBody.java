@@ -2,19 +2,15 @@ package com.company.spacetrans.entity;
 
 import io.jmix.core.FileRef;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.metamodel.annotation.InstanceName;
-import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.PropertyDatatype;
+import io.jmix.core.metamodel.annotation.*;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.util.UUID;
 
 @JmixEntity(name = "st_AstronomicalBody")
 @MappedSuperclass
 public class AstronomicalBody {
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
@@ -24,7 +20,6 @@ public class AstronomicalBody {
     @Version
     private Integer version;
 
-    @InstanceName
     @Column(name = "NAME", unique = true)
     private String name;
 
@@ -35,12 +30,20 @@ public class AstronomicalBody {
     @Column(name = "PICTURE")
     private FileRef picture;
 
-    public void setPicture(FileRef picture) {
-        this.picture = picture;
+    @DependsOnProperties({"name"})
+    @InstanceName
+    @JmixProperty
+    @Transient
+    public String getDisplayName() {
+        return String.format("%s (%S)", name, getClass().getSimpleName());
     }
 
-    public FileRef getPicture() {
-        return picture;
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public Integer getVersion() {
@@ -51,14 +54,6 @@ public class AstronomicalBody {
         this.version = version;
     }
 
-    public Double getMass() {
-        return mass;
-    }
-
-    public void setMass(Double mass) {
-        this.mass = mass;
-    }
-
     public String getName() {
         return name;
     }
@@ -67,11 +62,19 @@ public class AstronomicalBody {
         this.name = name;
     }
 
-    public UUID getId() {
-        return id;
+    public Double getMass() {
+        return mass;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setMass(Double mass) {
+        this.mass = mass;
+    }
+
+    public FileRef getPicture() {
+        return picture;
+    }
+
+    public void setPicture(FileRef picture) {
+        this.picture = picture;
     }
 }

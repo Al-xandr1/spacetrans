@@ -3,10 +3,7 @@ package com.company.spacetrans.entity;
 import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
-import io.jmix.core.metamodel.annotation.DependsOnProperties;
-import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.core.metamodel.annotation.JmixProperty;
-import io.jmix.core.metamodel.annotation.NumberFormat;
+import io.jmix.core.metamodel.annotation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,14 +13,14 @@ import java.util.UUID;
 @Table(name = "ST_ATMOSPHERIC_GAS")
 @Entity(name = "st_AtmosphericGas")
 public class AtmosphericGas {
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
 
-    @NotNull
-    @Version
     @Column(name = "VERSION", nullable = false)
+    @Version
     private Integer version;
 
     @NotNull
@@ -32,24 +29,25 @@ public class AtmosphericGas {
     @ManyToOne(optional = false)
     private Gas gas;
 
-    //todo [BUG] При проставлении формата в дизайнере он сбрасывается при переключении фокуса с поля Number format. При попытке проставить вручную аннотацию @NumberFormat(pattern = "###.00%") - она пропадает после переключения в дизайнер
-    //@NumberFormat(pattern = "###.00%") todo [LOW] либо попробовать через String и AttributeConverter
-    @NumberFormat(pattern = "###.00%")
-    //todo [BUG] Нельзя проставить число в поле volume - возникает алерт "Must be a double", хотя вводится значение 0.5 или 0,5
-    //todo [LOW] @NotNull - вернуть после починки.
+    //todo BUG При проставлении формата в дизайнере он сбрасывается при переключении фокуса с поля Number format. При попытке проставить вручную аннотацию @NumberFormat(pattern = "###.00%") - она пропадает после переключения в дизайнер
+    //@NumberFormat(pattern = "###.00%", groupingSeparator = ",", decimalSeparator = ".") todo [LOW] либо попробовать через String и AttributeConverter
+    @NumberFormat(pattern = "###.00%", groupingSeparator = ",", decimalSeparator = ".")
+    //todo BUG Нельзя проставить число в поле volume - возникает алерт "Must be a double", хотя вводится значение 0.5 или 0,5
+    //todo LOW @NotNull - вернуть после починки.
     @Column(name = "VOLUME") //, nullable = false)
     private Double volume;
 
-    @OnDeleteInverse(DeletePolicy.CASCADE)
     @NotNull
+    @OnDeleteInverse(DeletePolicy.CASCADE)
     @JoinColumn(name = "ATMOSPHERE_ID", nullable = false)
     @ManyToOne(optional = false)
     private Atmosphere atmosphere;
 
+    @InstanceName
     @DependsOnProperties({"gas", "atmosphere"})
     @Transient
     @JmixProperty
-    public String getFullName() {
+    public String getDisplayName() {
         return String.format("%s in %s",
                 gas != null ? gas.getName() : null,
                 atmosphere != null ? atmosphere.getDescription() : null);

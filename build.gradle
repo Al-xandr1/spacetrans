@@ -6,19 +6,19 @@ plugins {
 apply plugin: 'org.springframework.boot'
 
 jmix {
-    bomVersion = '1.0.0-SNAPSHOT' 
+    bomVersion = '1.0.0-SNAPSHOT'
     projectId = 'st'
 }
 
 group = 'com.company'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.11'
 
 repositories {
-    mavenCentral() 
+    mavenCentral()
     maven {
         url 'https://nexus.jmix.io/repository/public'
-    } 
+    }
 }
 
 dependencies {
@@ -32,6 +32,7 @@ dependencies {
     implementation 'io.jmix.security:jmix-security-ui-starter'
     implementation 'io.jmix.security:jmix-security-data-starter'
     implementation 'io.jmix.localfs:jmix-localfs-starter'
+    implementation 'com.opencsv:opencsv:4.1'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -40,6 +41,10 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    runtimeOnly 'org.postgresql:postgresql'
+
+    implementation "io.jmix.reports:jmix-reports-starter:1.0.0-SNAPSHOT"
+    implementation "io.jmix.reports:jmix-reports-ui-starter:1.0.0-SNAPSHOT"
 }
 
 test {

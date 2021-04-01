@@ -65,6 +65,9 @@
                         <button id="editBtn" action="planetsTable.edit"/>
                         <button id="refreshBtn" action="planetsTable.refresh"/>
                         <button id="removeBtn" action="planetsTable.remove"/>
+                        <fileUpload id="importPlanets" uploadButtonCaption="msg://com.company.spacetrans.screen.planet/importPlanet.caption"
+                                    uploadButtonDescription="msg://com.company.spacetrans.screen.planet/importPlanet.description"
+                        />
                     </buttonsPanel>
                 </groupTable>
                 <hbox id="lookupActions" spacing="true" visible="false">
@@ -72,7 +75,7 @@
                     <button action="lookupCancelAction"/>
                 </hbox>
             </vbox>
-            <!--todo [LOW] add picture scaling -->
+            <!--todo LOW add picture scaling -->
             <vbox id="pictureBox" height="100%" spacing="true" expand="planetPicture" margin="true" width="AUTO">
                 <image id="planetPicture" dataContainer="planetsDc" property="picture" scaleMode="SCALE_DOWN"/>
             </vbox>

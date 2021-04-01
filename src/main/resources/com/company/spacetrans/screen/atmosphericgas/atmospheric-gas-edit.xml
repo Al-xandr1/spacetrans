@@ -8,7 +8,7 @@
             <fetchPlan extends="_local">
                 <property name="gas" fetchPlan="_instance_name"/>
                 <property name="atmosphere" fetchPlan="_instance_name"/>
-                <property name="fullName"/>
+                <property name="displayName"/>
             </fetchPlan>
             <loader/>
         </instance>
@@ -44,7 +44,7 @@
                         <action id="clear" type="entity_clear"/>
                     </actions>
                 </entityPicker>
-                <textField id="fullNameField" property="fullName"/>
+                <textField id="fullNameField" property="displayName"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

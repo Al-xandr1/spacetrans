@@ -36,7 +36,7 @@
                 <fileStorageUpload id="pictureField" property="picture"/>
                 <entityPicker id="atmosphereField" property="atmosphere">
                     <actions>
-                        <!-- todo [BUG] генерируется поле entity_open_composition а надо то,что написано тут io.jmix.ui.action.entitypicker.EntityOpenCompositionAction.ID -->
+                        <!-- todo BUG генерируется поле entity_open_composition а надо то,что написано тут io.jmix.ui.action.entitypicker.EntityOpenCompositionAction.ID -->
                         <action id="open_composition" type="entity_openComposition"/>
                         <action id="clear" type="entity_clear"/>
                     </actions>

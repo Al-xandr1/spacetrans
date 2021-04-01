@@ -1,7 +1,10 @@
 package com.company.spacetrans.screen.gas;
 
-import io.jmix.ui.screen.*;
 import com.company.spacetrans.entity.Gas;
+import io.jmix.ui.screen.LookupComponent;
+import io.jmix.ui.screen.StandardLookup;
+import io.jmix.ui.screen.UiController;
+import io.jmix.ui.screen.UiDescriptor;
 
 @UiController("st_Gas.browse")
 @UiDescriptor("gas-browse.xml")

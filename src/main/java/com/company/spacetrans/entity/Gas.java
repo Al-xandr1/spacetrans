@@ -12,6 +12,7 @@ import java.util.UUID;
 @Table(name = "ST_GAS")
 @Entity(name = "st_Gas")
 public class Gas {
+
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "ST_PLANET")
 @Entity(name = "st_Planet")
 public class Planet extends AstronomicalBody {
-    //todo [LOW] set validation on numeric fields
+    //todo LOW set validation on numeric fields
 
     @NotNull
     @Column(name = "SEMI_MAJOR_AXIS", nullable = false)
@@ -27,20 +27,22 @@ public class Planet extends AstronomicalBody {
     private Double rotationPeriod;
 
     @OnDeleteInverse(DeletePolicy.DENY)
-    //todo [HIGH] @OnDelete(DeletePolicy.CASCADE) это нужно? удаляется после переключения в дизайнер
     @Composition
     @NotNull
     @JoinColumn(name = "ATMOSPHERE_ID", nullable = false)
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     private Atmosphere atmosphere;
 
     @NotNull
     @Column(name = "RINGS", nullable = false)
-    private Boolean rings = false;
-
+    private Boolean rings;
 
     public Boolean getRings() {
         return rings;
+    }
+
+    public void setRings(Boolean rings) {
+        this.rings = rings;
     }
 
     public void setRotationPeriod(Double rotationPeriod) {
